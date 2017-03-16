@@ -473,6 +473,7 @@ the following settings are then relevant:
 # cas.authn.attributeRepository.jdbc.columnMappings.columnAttrName2=columnAttrValue2
 # cas.authn.attributeRepository.jdbc.columnMappings.columnAttrName3=columnAttrValue3
 
+<<<<<<< 5.0.x
 # cas.authn.attributeRepository.jdbc.sql=SELECT * FROM table WHERE {0}
 # cas.authn.attributeRepository.jdbc.username=uid
 # cas.authn.attributeRepository.jdbc.healthQuery=SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
@@ -493,8 +494,30 @@ the following settings are then relevant:
 # cas.authn.attributeRepository.jdbc.pool.suspension=false
 # cas.authn.attributeRepository.jdbc.pool.minSize=6
 # cas.authn.attributeRepository.jdbc.pool.maxSize=18
-# cas.authn.attributeRepository.jdbc.pool.maxIdleTime=1000
 # cas.authn.attributeRepository.jdbc.pool.maxWait=2000
+=======
+# cas.authn.attributeRepository.jdbc[0].sql=SELECT * FROM table WHERE {0}
+# cas.authn.attributeRepository.jdbc[0].username=uid
+# cas.authn.attributeRepository.jdbc[0].healthQuery=
+# cas.authn.attributeRepository.jdbc[0].isolateInternalQueries=false
+# cas.authn.attributeRepository.jdbc[0].url=jdbc:hsqldb:mem:cas-hsql-database
+# cas.authn.attributeRepository.jdbc[0].failFast=true
+# cas.authn.attributeRepository.jdbc[0].isolationLevelName=ISOLATION_READ_COMMITTED
+# cas.authn.attributeRepository.jdbc[0].dialect=org.hibernate.dialect.HSQLDialect
+# cas.authn.attributeRepository.jdbc[0].leakThreshold=10
+# cas.authn.attributeRepository.jdbc[0].propagationBehaviorName=PROPAGATION_REQUIRED
+# cas.authn.attributeRepository.jdbc[0].batchSize=1
+# cas.authn.attributeRepository.jdbc[0].user=sa
+# cas.authn.attributeRepository.jdbc[0].ddlAuto=create-drop
+# cas.authn.attributeRepository.jdbc[0].password=
+# cas.authn.attributeRepository.jdbc[0].autocommit=false
+# cas.authn.attributeRepository.jdbc[0].driverClass=org.hsqldb.jdbcDriver
+# cas.authn.attributeRepository.jdbc[0].idleTimeout=5000
+# cas.authn.attributeRepository.jdbc[0].pool.suspension=false
+# cas.authn.attributeRepository.jdbc[0].pool.minSize=6
+# cas.authn.attributeRepository.jdbc[0].pool.maxSize=18
+# cas.authn.attributeRepository.jdbc[0].pool.maxWait=2000
+>>>>>>> 04a0551 remove unused max idle time property from code and documentation
 ```
 
 ### Default Bundle
@@ -609,7 +632,6 @@ same IP address.
 # cas.authn.throttle.jdbc.pool.suspension=false
 # cas.authn.throttle.jdbc.pool.minSize=6
 # cas.authn.throttle.jdbc.pool.maxSize=18
-# cas.authn.throttle.jdbc.pool.maxIdleTime=1000
 # cas.authn.throttle.jdbc.pool.maxWait=2000
 ```
 
@@ -1381,7 +1403,6 @@ To learn more about this topic, [please review this guide](Multifactor-TrustedDe
 # cas.authn.mfa.trusted.jpa.pool.suspension=false
 # cas.authn.mfa.trusted.jpa.pool.minSize=6
 # cas.authn.mfa.trusted.jpa.pool.maxSize=18
-# cas.authn.mfa.trusted.jpa.pool.maxIdleTime=1000
 # cas.authn.mfa.trusted.jpa.pool.maxWait=2000
 ```
 
@@ -1461,7 +1482,6 @@ To learn more about this topic, [please review this guide](GoogleAuthenticator-A
 # cas.authn.mfa.gauth.jpa.database.pool.suspension=false
 # cas.authn.mfa.gauth.jpa.database.pool.minSize=6
 # cas.authn.mfa.gauth.jpa.database.pool.maxSize=18
-# cas.authn.mfa.gauth.jpa.database.pool.maxIdleTime=1000
 # cas.authn.mfa.gauth.jpa.database.pool.maxWait=2000
 ```
 
@@ -2015,7 +2035,6 @@ Store audit logs inside a database.
 # cas.audit.jdbc.pool.suspension=false
 # cas.audit.jdbc.pool.minSize=6
 # cas.audit.jdbc.pool.maxSize=18
-# cas.audit.jdbc.pool.maxIdleTime=1000
 # cas.audit.jdbc.pool.maxWait=2000
 ```
 
@@ -2087,7 +2106,6 @@ used for authentication, etc.
 # cas.monitor.ldap.pool.suspension=false
 # cas.monitor.ldap.pool.minSize=6
 # cas.monitor.ldap.pool.maxSize=18
-# cas.monitor.ldap.pool.maxIdleTime=1000
 # cas.monitor.ldap.pool.maxWait=2000
 
 # cas.monitor.ldap.maxWait=5000
@@ -2208,7 +2226,6 @@ Decide how CAS should store authentication events inside a database instance.
 # cas.events.jpa.pool.suspension=false
 # cas.events.jpa.pool.minSize=6
 # cas.events.jpa.pool.maxSize=18
-# cas.events.jpa.pool.maxIdleTime=1000
 # cas.events.jpa.pool.maxWait=2000
 ```
 
@@ -2377,7 +2394,6 @@ To learn more about this topic, [please review this guide](JPA-Service-Managemen
 # cas.serviceRegistry.jpa.pool.suspension=false
 # cas.serviceRegistry.jpa.pool.minSize=6
 # cas.serviceRegistry.jpa.pool.maxSize=18
-# cas.serviceRegistry.jpa.pool.maxIdleTime=1000
 # cas.serviceRegistry.jpa.pool.maxWait=2000
 ```
 
@@ -2424,7 +2440,6 @@ To learn more about this topic, [please review this guide](JPA-Ticket-Registry.h
 # cas.ticket.registry.jpa.pool.suspension=false
 # cas.ticket.registry.jpa.pool.minSize=6
 # cas.ticket.registry.jpa.pool.maxSize=18
-# cas.ticket.registry.jpa.pool.maxIdleTime=1000
 # cas.ticket.registry.jpa.pool.maxWait=2000
 
 # cas.ticket.registry.jpa.crypto.signing.key=
