@@ -672,9 +672,7 @@ ext.libraries = [
                 dependencies.create("javax.el:javax.el-api:3.0.0") {
                     force = true
                 },
-                dependencies.create("org.glassfish.web:el-impl:2.2") {
-                    exclude(group: "javax.el", module: "javax.el-api")
-                    exclude(group: "org.slf4j", module: "slf4j-api")
+                dependencies.create("org.glassfish:jakarta.el:3.0.2") {
                     force = true
                 }
         ],
