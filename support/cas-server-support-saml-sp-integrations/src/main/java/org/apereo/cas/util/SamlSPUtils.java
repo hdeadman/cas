@@ -59,7 +59,7 @@ public class SamlSPUtils {
         val service = new SamlRegisteredService();
         service.setName(sp.getName());
         service.setDescription(sp.getDescription());
-        service.setEvaluationOrder(Ordered.HIGHEST_PRECEDENCE);
+        service.setEvaluationOrder(Ordered.LOWEST_PRECEDENCE);
         service.setMetadataLocation(sp.getMetadata());
         val attributesToRelease = new ArrayList<String>(sp.getAttributes());
         if (StringUtils.isNotBlank(sp.getNameIdAttribute())) {
