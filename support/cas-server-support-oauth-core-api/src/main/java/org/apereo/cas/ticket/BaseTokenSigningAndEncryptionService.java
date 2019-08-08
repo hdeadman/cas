@@ -1,5 +1,6 @@
 package org.apereo.cas.ticket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.util.EncodingUtils;
@@ -30,6 +31,7 @@ import java.security.Key;
 @RequiredArgsConstructor
 @Getter
 public abstract class BaseTokenSigningAndEncryptionService implements OAuthTokenSigningAndEncryptionService {
+    private static final ObjectMapper MAPPER = new ObjectMapper().findAndRegisterModules();
     private final String issuer;
 
     /**
@@ -38,10 +40,13 @@ public abstract class BaseTokenSigningAndEncryptionService implements OAuthToken
      * @param claims the claims
      * @return the json web signature
      */
+    @SneakyThrows
     protected JsonWebSignature createJsonWebSignature(final JwtClaims claims) {
         val jws = new JsonWebSignature();
         val jsonClaims = claims.toJson();
-        jws.setPayload(jsonClaims);
+        val jacksonJsonNodeClaims = MAPPER.readTree(jsonClaims);
+        val normalizedJsonClaims = MAPPER.writeValueAsString(jacksonJsonNodeClaims);
+        jws.setPayload(normalizedJsonClaims);
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.NONE);
         jws.setAlgorithmConstraints(AlgorithmConstraints.NO_CONSTRAINTS);
         return jws;
