@@ -39,7 +39,10 @@ ext {
 
     publishSnapshots = providers.systemProperty("publishSnapshots").forUseAtConfigurationTime().present
     publishReleases = providers.systemProperty("publishReleases").forUseAtConfigurationTime().present
-    
+
+    publishGprReleases = providers.systemProperty("publishGprReleases").forUseAtConfigurationTime().present
+    gprRepositoryUrl = providers.systemProperty("gprRepositoryUrl").forUseAtConfigurationTime().present
+
     skipBootifulArtifact = providers.systemProperty("skipBootifulArtifact").forUseAtConfigurationTime().present
     skipErrorProneCompiler = providers.systemProperty("skipErrorProneCompiler").forUseAtConfigurationTime().present
 
@@ -347,6 +350,19 @@ subprojects {
                             }
                         }
                     }
+                    if (rootProject.publishGprReleases) {
+                        maven {
+                            name "Github-Releases"
+                            url "${gprRepositoryUrl}"
+                            mavenContent {
+                                releasesOnly()
+                            }
+                            credentials {
+                                username = System.getenv("GITHUB_ACTOR")
+                                password = System.getenv("GITHUB_TOKEN")
+                            }
+                        }
+                    }
                 }
             }
 
@@ -359,7 +375,7 @@ subprojects {
 
     artifacts {
         tests testJar
-        if (rootProject.publishReleases || rootProject.publishSnapshots) {
+        if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
             archives sourcesJar
             archives javadocJar
             archives resourcesJar
@@ -559,7 +575,7 @@ task gradleHome(description: "Display GRADLE_HOME environment variable") {
     }
 }
 
-if (rootProject.publishReleases || rootProject.publishSnapshots) {
+if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
     artifacts {
         archives aggregateJavadocsIntoJar
         archives rootSourcesJar
