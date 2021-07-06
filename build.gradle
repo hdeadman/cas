@@ -562,7 +562,7 @@ if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.
     }
 }
 
-if (rootProject.publishReleases || rootProject.publishSnapshots) {
+if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
     task rootSourcesJar(type: Jar, description: "Build JAR for the root CAS module") {
         archiveBaseName.set("${project.archivesBaseName}")
         from rootProject.file("src")
