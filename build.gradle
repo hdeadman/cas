@@ -41,6 +41,9 @@ ext {
     publishReleases = providers.systemProperty("publishReleases").forUseAtConfigurationTime().present
 
     publishGprReleases = providers.systemProperty("publishGprReleases").forUseAtConfigurationTime().present
+
+    publishFlag = publishSnapshots || publishRelease || publishGprReleases
+
     gprRepositoryUrl = providers.systemProperty("gprRepositoryUrl").forUseAtConfigurationTime().present
 
     skipBootifulArtifact = providers.systemProperty("skipBootifulArtifact").forUseAtConfigurationTime().present
@@ -49,7 +52,7 @@ ext {
     enableRemoteDebugging = providers.systemProperty("enableRemoteDebugging").forUseAtConfigurationTime().present
     remoteDebuggingSuspend = providers.systemProperty("remoteDebuggingSuspend")
             .forUseAtConfigurationTime().getOrElse("false") == "true" ? "y" : "n"
-    generateGitProperties = publishReleases || publishSnapshots
+    generateGitProperties = publishFlag
             || providers.systemProperty("generateGitProperties").forUseAtConfigurationTime().present
 
     ci = System.getenv("CI") || providers.systemProperty("CI").forUseAtConfigurationTime().present
@@ -375,7 +378,7 @@ subprojects {
 
     artifacts {
         tests testJar
-        if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
+        if (rootProject.publishFlag) {
             archives sourcesJar
             archives javadocJar
             archives resourcesJar
@@ -547,7 +550,7 @@ subprojects {
     }
 }
 
-if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
+if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.publishFlag) {
     tasks.withType(Javadoc) {
         source subprojects.collect { project -> project.sourceSets.main.allJava }
         destinationDir = new File(buildDir, "javadoc")
@@ -562,7 +565,7 @@ if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.
     }
 }
 
-if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
+if (rootProject.publishFlag) {
     task rootSourcesJar(type: Jar, description: "Build JAR for the root CAS module") {
         archiveBaseName.set("${project.archivesBaseName}")
         from rootProject.file("src")
@@ -575,7 +578,7 @@ task gradleHome(description: "Display GRADLE_HOME environment variable") {
     }
 }
 
-if (rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
+if (rootProject.publishFlag) {
     artifacts {
         archives aggregateJavadocsIntoJar
         archives rootSourcesJar

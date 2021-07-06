@@ -73,7 +73,7 @@ dependencies {
     }
 
     implementation libraries.springcloudconfigclient
-    if (!rootProject.publishReleases && !rootProject.publishSnapshots && !rootProject.publishGprReleases) {
+    if (!rootProject.publishFlag) {
         runtimeOnly libraries.springbootdevtools
     }
 
