@@ -547,7 +547,7 @@ subprojects {
     }
 }
 
-if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.publishReleases || rootProject.publishSnapshots) {
+if (!gradle.startParameter.excludedTaskNames.contains("javadoc") || rootProject.publishReleases || rootProject.publishSnapshots || rootProject.publishGprReleases) {
     tasks.withType(Javadoc) {
         source subprojects.collect { project -> project.sourceSets.main.allJava }
         destinationDir = new File(buildDir, "javadoc")
