@@ -7,6 +7,7 @@ env:
   REPO_OWNER: ${{ github.repository_owner }}
   RUBY_VERSION: 2.6
   JDK_CURRENT: 11.0.11
+  TIMEOUT: 640000
 
 ##########################################################################
 
@@ -86,6 +87,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Release to GH Package Repository
-        run: ./gradlew -DpublishGprReleases=true --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PgprRepositoryUrl=https://maven.pkg.github.com/${GITHUB_REPOSITORY} -Pversion=${GITHUB_REF/refs\/tags\//}
+        run: ./gradlew -DpublishGprReleases=true --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout="${TIMEOUT}" -Dorg.gradle.internal.http.connectionTimeout="${TIMEOUT}"  build publish -x test -x javadoc -x check -PgprRepositoryUrl=https://maven.pkg.github.com/${GITHUB_REPOSITORY} -Pversion=${GITHUB_REF/refs\/tags\//}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
