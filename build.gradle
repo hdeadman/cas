@@ -459,7 +459,7 @@ subprojects {
         project.buildDate != null || !project.buildJarFile.exists()
     }
 
-    if (projectShouldBePublished(project)) {
+    if (projectNeedsLombok(project)) {
         apply plugin: "io.franzbecker.gradle-lombok"
         lombok {
             version = "$lombokVersion"
@@ -673,6 +673,11 @@ boolean projectShouldBePublished(Project project) {
     }
 
     project.ext.publishable = publishable
+}
+
+boolean projectNeedsLombok(Project project) {
+    return !["api", "core", "docs", "support", "webapp"].contains(project.name)
+            && !project.getPath().contains("cas-server-documentation")
 }
 
 
