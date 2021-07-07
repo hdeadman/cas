@@ -42,7 +42,7 @@ ext {
 
     publishGprReleases = providers.systemProperty("publishGprReleases").forUseAtConfigurationTime().present
 
-    publishFlag = publishSnapshots || publishRelease || publishGprReleases
+    publishFlag = publishSnapshots || publishReleases || publishGprReleases
 
     gprRepositoryUrl = providers.systemProperty("gprRepositoryUrl").forUseAtConfigurationTime().present
 
