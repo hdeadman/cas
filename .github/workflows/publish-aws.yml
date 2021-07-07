@@ -1,4 +1,4 @@
-name: Publish Fork to Github
+name: Publish Fork to AWS CodeArtifact
 
 env:
   JAVA_OPTS: "-Xms512m -Xmx6048m -Xss128m -XX:ReservedCodeCacheSize=512m -server"
@@ -7,6 +7,9 @@ env:
   REPO_OWNER: ${{ github.repository_owner }}
   RUBY_VERSION: 2.6
   JDK_CURRENT: 11.0.11
+  CODE_ARTIFACT_DOMAIN: ${{ secrets.CODE_ARTIFACT_DOMAIN }}
+  #CODE_ARTIFACT_OWNER: ${{ secrets.CODE_ARTIFACT_OWNER }}
+  CODE_ARTIFACT_URL: ${{ secrets.CODE_ARTIFACT_URL }}
 
 ##########################################################################
 
@@ -19,7 +22,7 @@ on:
 
 jobs:
 
-##########################################################################
+  ##########################################################################
 
   initialize:
     runs-on: ubuntu-latest
@@ -33,7 +36,7 @@ jobs:
       - name: Initialize
         run: ls ./ci && chmod -R 777 ./ci/*.sh && ./ci/init-build.sh
 
-##########################################################################
+  ##########################################################################
 
   cache:
     runs-on: ubuntu-latest
@@ -50,14 +53,15 @@ jobs:
       - uses: actions/checkout@v2
       - name: Download Dependencies
         run: ./gradlew --build-cache --configure-on-demand --no-daemon downloadDependencies --parallel --refresh-dependencies
+        if: env.REPO_TOKEN != null
       - uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-            
-##########################################################################
+
+  ##########################################################################
 
   publish-release:
     runs-on: ubuntu-latest
@@ -81,11 +85,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Output Config
-        run: echo "username=${GITHUB_ACTOR} -DgprRepositoryUrl=https://github.com/${GITHUB_ACTOR} on tag ${{ github.ref }} Token Length is [$(echo -n $GITHUB_TOKEN | wc -c)] Tag is ${GITHUB_REF/refs\/tags\//}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure AWS credentials from Test account
+        id: aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.CODE_ARTIFACT_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CODE_ARTIFACT_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.CODE_ARTIFACT_REGION }}
+      - name: Configure AWS CLI Auth Token
+        run: export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain ${CODE_ARTIFACT_DOMAIN} --domain-owner ${{ steps.aws-credentials.outputs.aws-account-id }} --query authorizationToken --output text`
+        if: ${{ env.CODE_ARTIFACT_DOMAIN != null && env.CODE_ARTIFACT_OWNER != null }}
       - name: Publish Release to GH Package Repository
-        run: ./gradlew -DpublishGprReleases=true --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PgprRepositoryUrl=https://maven.pkg.github.com/${GITHUB_REPOSITORY} -Pversion=${GITHUB_REF/refs\/tags\//}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew -DpublishAWSReleases=true --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PawsRepositoryUrl=${CODE_ARTIFACT_URL} -Pversion=${GITHUB_REF/refs\/tags\//}
+        if: ${{ env.CODE_ARTIFACT_URL != null }}

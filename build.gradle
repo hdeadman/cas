@@ -41,8 +41,9 @@ ext {
     publishReleases = providers.systemProperty("publishReleases").forUseAtConfigurationTime().present
 
     publishGprReleases = providers.systemProperty("publishGprReleases").forUseAtConfigurationTime().present
+    publishAWSReleases = providers.systemProperty("publishAWSReleases").forUseAtConfigurationTime().present
 
-    publishFlag = publishSnapshots || publishReleases || publishGprReleases
+    publishFlag = publishSnapshots || publishReleases || publishGprReleases || publishAWSReleases
 
     gprRepositoryUrl = providers.systemProperty("gprRepositoryUrl").forUseAtConfigurationTime().present
 
@@ -366,6 +367,16 @@ subprojects {
                             }
                         }
                     }
+                    if (rootProject.publishAWSReleases) {
+                        maven {
+                            name "AWS-CodeArtifact-Releases"
+                            url "${awsRepositoryUrl}"
+                            credentials {
+                                username "aws"
+                                password System.env.CODEARTIFACT_AUTH_TOKEN
+                            }
+                        }
+                    }
                 }
             }
 
@@ -655,6 +666,12 @@ task verifyRequiredJavaVersion {
 boolean projectShouldBePublished(Project project) {
     def publishable = !["api", "core", "docs", "support", "webapp"].contains(project.name)
             && !project.getPath().contains("cas-server-documentation")
+
+    if (rootProject.publishGprReleases && project.getPath().contains("cas-server-support-shell")) {
+        // shell is too big for github
+        publishable = false
+    }
+
     project.ext.publishable = publishable
 }
 
