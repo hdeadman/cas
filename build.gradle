@@ -372,8 +372,8 @@ subprojects {
                             name "AWS-CodeArtifact-Releases"
                             url "${awsRepositoryUrl}"
                             credentials {
-                                username "aws"
-                                password System.env.CODEARTIFACT_AUTH_TOKEN
+                                username = "aws"
+                                password = System.getenv("CODEARTIFACT_AUTH_TOKEN")
                             }
                         }
                     }
