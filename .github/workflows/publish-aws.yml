@@ -94,7 +94,7 @@ jobs:
           aws-region: ${{ secrets.CODE_ARTIFACT_REGION }}
       - name: Configure AWS CLI Auth Token
         run: export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain ${CODE_ARTIFACT_DOMAIN} --domain-owner ${{ steps.aws-credentials.outputs.aws-account-id }} --query authorizationToken --output text`
-        if: ${{ env.CODE_ARTIFACT_DOMAIN != null && env.CODE_ARTIFACT_OWNER != null }}
+        if: ${{ env.CODE_ARTIFACT_DOMAIN != null }}
       - name: Publish Release to GH Package Repository
         run: ./gradlew -DpublishAWSReleases=true --build-cache --configure-on-demand --no-daemon -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PawsRepositoryUrl=${CODE_ARTIFACT_URL} -Pversion=${GITHUB_REF/refs\/tags\//}
         if: ${{ env.CODE_ARTIFACT_URL != null }}
