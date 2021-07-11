@@ -60,3 +60,4 @@ ci/tests/puppeteer/overlay
 ci/tests/puppeteer/package*.json
 ci/tests/puppeteer/**/strapi
 ci/tests/puppeteer/**/*.jwks
+
