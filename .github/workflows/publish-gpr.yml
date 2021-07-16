@@ -1,5 +1,5 @@
 name: Publish Fork Release to Github Package Repository
-# As of July 2021 this workflow fails with 409 Conflict error on seemingly random packages.
+# As of July 2021 this workflow fails with 409 Conflict error on seemingly random packages or associated files (e.g. *.md5).
 # With as many packages as CAS publishes your odds of successfully publishing a release
 # to Github Packages are low, possibly zero.
 # The CAS shell jar is skipped because it fails with 400 error, presumably because it is too big for GPR. (~120MB)
