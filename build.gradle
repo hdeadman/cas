@@ -42,6 +42,8 @@ ext {
 
     publishFlag = publishSnapshots || publishReleases
 
+    publishMinimalArtifacts = providers.systemProperty("publishMinimalArtifacts").forUseAtConfigurationTime().present
+
     skipBootifulArtifact = providers.systemProperty("skipBootifulArtifact").forUseAtConfigurationTime().present
     skipErrorProneCompiler = providers.systemProperty("skipErrorProneCompiler").forUseAtConfigurationTime().present
 
@@ -309,10 +311,12 @@ subprojects {
                         logger.info "Project ${project.name} should be published as a JAR"
                         mavenJava(MavenPublication) {
                             from components.java
-                            artifact tasks['sourcesJar']
-                            artifact tasks['resourcesJar']
-                            artifact tasks['javadocJar']
-                            artifact tasks['testJar']
+                            if (!rootProject.publishMinimalArtifacts) {
+                                artifact tasks['sourcesJar']
+                                artifact tasks['resourcesJar']
+                                artifact tasks['javadocJar']
+                                artifact tasks['testJar']
+                            }
 
                             pom {
                                 createPom(it, project)
@@ -363,7 +367,7 @@ subprojects {
 
     artifacts {
         tests testJar
-        if (rootProject.publishFlag) {
+        if (rootProject.publishFlag && !rootProject.publishMinimalArtifacts) {
             archives sourcesJar
             archives javadocJar
             archives resourcesJar
@@ -563,7 +567,7 @@ task gradleHome(description: "Display GRADLE_HOME environment variable") {
     }
 }
 
-if (rootProject.publishFlag) {
+if (rootProject.publishFlag && !rootProject.publishMinimalArtifacts) {
     artifacts {
         archives aggregateJavadocsIntoJar
         archives rootSourcesJar
