@@ -644,7 +644,7 @@ task verifyRequiredJavaVersion {
 boolean projectShouldBePublished(Project project) {
     def publishable = !["api", "core", "docs", "support", "webapp"].contains(project.name)
             && !project.getPath().contains("cas-server-documentation")
-    if ("${releaseRepositoryUrl}".contains("github.com") && project.getPath().contains("cas-server-support-shell")) {
+    if ("${releaseRepositoryUrl}".contains("githubnot.com") && project.getPath().contains("cas-server-support-shell")) {
         // shell is too big for github
         publishable = false
     }
