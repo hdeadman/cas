@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * @author Misagh Moayyed
  * @since 6.4.0
  */
-@Configuration(value = "CasCoreRestConfiguration", proxyBeanMethods = true)
+@Configuration(value = "CasCoreRestConfiguration", proxyBeanMethods = false)
 @Slf4j
 public class CasCoreRestConfiguration {
 
@@ -61,10 +61,11 @@ public class CasCoreRestConfiguration {
     
     @Bean
     @ConditionalOnMissingBean(name = "restAuthenticationService")
-    public RestAuthenticationService restAuthenticationService() {
+    public RestAuthenticationService restAuthenticationService(
+        @Qualifier("restHttpRequestCredentialFactory") final RestHttpRequestCredentialFactory restHttpRequestCredentialFactory) {
         return new DefaultRestAuthenticationService(
             authenticationSystemSupport.getObject(),
-            restHttpRequestCredentialFactory(),
+            restHttpRequestCredentialFactory,
             webApplicationServiceFactory.getObject(),
             multifactorTriggerSelectionStrategy.getObject(),
             servicesManager.getObject(),

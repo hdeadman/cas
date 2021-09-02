@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author Misagh Moayyed
  * @since 6.1.0
  */
-@Configuration(value = "ldapPasswordSynchronizationConfiguration", proxyBeanMethods = true)
+@Configuration(value = "ldapPasswordSynchronizationConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @ConditionalOnProperty(prefix = "cas.authn.password-sync", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class LdapPasswordSynchronizationConfiguration {

@@ -110,6 +110,7 @@ public class CasMultifactorAuthenticationWebflowConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "multifactorAuthenticationProviderResolver")
     public MultifactorAuthenticationProviderResolver multifactorAuthenticationProviderResolver() {
+        ApplicationContextProvider.holdApplicationContext(applicationContext);
         val resolvers = ApplicationContextProvider.getMultifactorAuthenticationPrincipalResolvers();
         return new DefaultMultifactorAuthenticationProviderResolver(resolvers);
     }

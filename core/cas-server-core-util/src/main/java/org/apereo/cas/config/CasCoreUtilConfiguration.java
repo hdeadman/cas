@@ -13,7 +13,6 @@ import org.apereo.cas.util.spring.SpringAwareMessageMessageInterpolator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -38,11 +37,13 @@ import java.time.ZonedDateTime;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@Configuration(value = "casCoreUtilConfiguration", proxyBeanMethods = true)
+@Configuration(value = "casCoreUtilConfiguration", proxyBeanMethods = false)
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @EnableScheduling
 @EnableConfigurationProperties(CasConfigurationProperties.class)
-public class CasCoreUtilConfiguration implements InitializingBean {
+public class CasCoreUtilConfiguration {
+
+public class CasCoreUtilConfiguration {
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public ApplicationContextProvider casApplicationContextProvider() {
@@ -56,7 +57,10 @@ public class CasCoreUtilConfiguration implements InitializingBean {
 
     @Bean
     public Converter<ZonedDateTime, String> zonedDateTimeToStringConverter() {
-        return new Converters.ZonedDateTimeToStringConverter();
+        val converter = new Converters.ZonedDateTimeToStringConverter();
+        val registry = (ConverterRegistry) DefaultConversionService.getSharedInstance();
+        registry.addConverter(converter);
+        return converter;
     }
 
     @Bean
@@ -79,12 +83,5 @@ public class CasCoreUtilConfiguration implements InitializingBean {
     @Bean
     public CasRuntimeModuleLoader casRuntimeModuleLoader() {
         return new DefaultCasRuntimeModuleLoader();
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        Assert.notNull(casApplicationContextProvider(), "Application context cannot be initialized");
-        val registry = (ConverterRegistry) DefaultConversionService.getSharedInstance();
-        registry.addConverter(zonedDateTimeToStringConverter());
     }
 }

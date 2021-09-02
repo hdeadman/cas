@@ -26,7 +26,7 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 6.1.0
  */
-@Configuration(value = "oidcThrottleConfiguration", proxyBeanMethods = true)
+@Configuration(value = "oidcThrottleConfiguration", proxyBeanMethods = false)
 @AutoConfigureBefore(OidcConfiguration.class)
 public class OidcThrottleConfiguration {
     private static final List<String> THROTTLED_ENDPOINTS = List.of(
@@ -63,8 +63,9 @@ public class OidcThrottleConfiguration {
 
     @ConditionalOnMissingBean(name = "oidcAuthenticationThrottlingExecutionPlanConfigurer")
     @Bean
-    public AuthenticationThrottlingExecutionPlanConfigurer oidcAuthenticationThrottlingExecutionPlanConfigurer() {
-        return plan -> plan.registerAuthenticationThrottleFilter(oidcThrottledRequestFilter());
+    public AuthenticationThrottlingExecutionPlanConfigurer oidcAuthenticationThrottlingExecutionPlanConfigurer(
+        @Qualifier("oidcThrottledRequestFilter") final ThrottledRequestFilter oidcThrottledRequestFilter) {
+        return plan -> plan.registerAuthenticationThrottleFilter(oidcThrottledRequestFilter);
     }
 
     @Bean

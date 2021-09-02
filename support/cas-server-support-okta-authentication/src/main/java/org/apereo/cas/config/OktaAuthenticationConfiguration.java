@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Misagh Moayyed
  * @since 6.2.0
  */
-@Configuration(value = "oktaAuthenticationConfiguration", proxyBeanMethods = true)
+@Configuration(value = "oktaAuthenticationConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @ConditionalOnProperty("cas.authn.okta.organization-url")
 public class OktaAuthenticationConfiguration {
@@ -67,13 +67,15 @@ public class OktaAuthenticationConfiguration {
     @ConditionalOnMissingBean(name = "oktaAuthenticationHandler")
     @Bean
     @RefreshScope
-    public AuthenticationHandler oktaAuthenticationHandler() {
+    public AuthenticationHandler oktaAuthenticationHandler(
+        @Qualifier("oktaPrincipalFactory") final PrincipalFactory oktaPrincipalFactory,
+        @Qualifier("oktaAuthenticationClient") final AuthenticationClient oktaAuthenticationClient) {
         val okta = casProperties.getAuthn().getOkta();
         val handler = new OktaAuthenticationHandler(okta.getName(),
             servicesManager.getObject(),
-            oktaPrincipalFactory(),
+            oktaPrincipalFactory,
             okta,
-            oktaAuthenticationClient());
+            oktaAuthenticationClient);
         handler.setState(okta.getState());
         handler.setPrincipalNameTransformer(PrincipalNameTransformerUtils.newPrincipalNameTransformer(okta.getPrincipalTransformation()));
         handler.setPasswordEncoder(PasswordEncoderUtils.newPasswordEncoder(okta.getPasswordEncoder(), applicationContext));

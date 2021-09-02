@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Configuration(value = "surrogateLdapAuthenticationConfiguration", proxyBeanMethods = true)
+@Configuration(value = "surrogateLdapAuthenticationConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @Slf4j
 public class SurrogateLdapAuthenticationConfiguration {
@@ -46,10 +46,11 @@ public class SurrogateLdapAuthenticationConfiguration {
 
     @RefreshScope
     @Bean
-    public SurrogateAuthenticationService surrogateAuthenticationService() {
+    public SurrogateAuthenticationService surrogateAuthenticationService(
+        @Qualifier("surrogateLdapConnectionFactory") final ConnectionFactory surrogateLdapConnectionFactory) {
         val su = casProperties.getAuthn().getSurrogate();
         LOGGER.debug("Using LDAP [{}] with baseDn [{}] to locate surrogate accounts",
             su.getLdap().getLdapUrl(), su.getLdap().getBaseDn());
-        return new SurrogateLdapAuthenticationService(surrogateLdapConnectionFactory(), su.getLdap(), servicesManager.getObject());
+        return new SurrogateLdapAuthenticationService(surrogateLdapConnectionFactory, su.getLdap(), servicesManager.getObject());
     }
 }

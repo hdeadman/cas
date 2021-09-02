@@ -95,7 +95,7 @@ public class DefaultConsentDecisionBuilder implements ConsentDecisionBuilder {
             val names = EncodingUtils.decodeBase64ToString(result);
             return MAPPER.readValue(JsonValue.readHjson(names).toString(), Map.class);
         } catch (final Exception e) {
-            throw new IllegalArgumentException("Could not serialize attributes for consent decision");
+            throw new IllegalArgumentException("Could not serialize attributes for consent decision:" + e.getMessage());
         }
     }
 

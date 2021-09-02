@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@Configuration(value = "casJdbcThrottlingConfiguration", proxyBeanMethods = true)
+@Configuration(value = "casJdbcThrottlingConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @AutoConfigureAfter(CasThrottlingConfiguration.class)
 public class CasJdbcThrottlingConfiguration {
