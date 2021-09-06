@@ -25,7 +25,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.Assert;
 import org.springframework.validation.beanvalidation.BeanValidationPostProcessor;
 
 import javax.validation.MessageInterpolator;

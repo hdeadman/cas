@@ -118,8 +118,10 @@ public class DuoSecurityAuthenticationEventExecutionPlanConfiguration {
     @ConditionalOnMissingBean(name = "duoProviderFactory")
     @Bean
     @RefreshScope
-    public MultifactorAuthenticationProviderFactoryBean<DuoSecurityMultifactorAuthenticationProvider, DuoSecurityMultifactorAuthenticationProperties> duoProviderFactory() {
-        val resolvers = ApplicationContextProvider.getMultifactorAuthenticationPrincipalResolvers();
+    public MultifactorAuthenticationProviderFactoryBean<DuoSecurityMultifactorAuthenticationProvider, DuoSecurityMultifactorAuthenticationProperties> duoProviderFactory(
+        @Qualifier("casApplicationContextProvider") ApplicationContextProvider casApplicationContextProvider
+    ) {
+        val resolvers = casApplicationContextProvider.getMultifactorAuthenticationPrincipalResolvers();
         return new DuoSecurityMultifactorAuthenticationProviderFactory(httpClient.getObject(),
             duoSecurityBypassEvaluator.getObject(),
             failureModeEvaluator.getObject(), casProperties, resolvers);
@@ -128,20 +130,24 @@ public class DuoSecurityAuthenticationEventExecutionPlanConfiguration {
     @ConditionalOnMissingBean(name = "duoProviderBean")
     @Bean
     @RefreshScope
-    public MultifactorAuthenticationProviderBean<DuoSecurityMultifactorAuthenticationProvider, DuoSecurityMultifactorAuthenticationProperties> duoProviderBean() {
-        return new MultifactorAuthenticationProviderBean(duoProviderFactory(),
+    public MultifactorAuthenticationProviderBean<DuoSecurityMultifactorAuthenticationProvider, DuoSecurityMultifactorAuthenticationProperties> duoProviderBean(
+        @Qualifier("casApplicationContextProvider") ApplicationContextProvider casApplicationContextProvider
+    ) {
+        return new MultifactorAuthenticationProviderBean(duoProviderFactory(casApplicationContextProvider),
             applicationContext.getDefaultListableBeanFactory(),
             casProperties.getAuthn().getMfa().getDuo());
     }
 
     @RefreshScope
     @Bean
-    public Collection<DuoSecurityAuthenticationHandler> duoAuthenticationHandlers() {
-        val resolvers = ApplicationContextProvider.getMultifactorAuthenticationPrincipalResolvers();
+    public Collection<DuoSecurityAuthenticationHandler> duoAuthenticationHandlers(
+        @Qualifier("casApplicationContextProvider") ApplicationContextProvider casApplicationContextProvider
+    ) {
+        val resolvers = casApplicationContextProvider.getMultifactorAuthenticationPrincipalResolvers();
         return casProperties.getAuthn().getMfa().getDuo()
             .stream()
             .map(props -> new DuoSecurityAuthenticationHandler(props.getName(), servicesManager.getObject(),
-                duoPrincipalFactory(), duoProviderBean().getProvider(props.getId()), props.getOrder(), resolvers))
+                duoPrincipalFactory(), duoProviderBean(casApplicationContextProvider).getProvider(props.getId()), props.getOrder(), resolvers))
             .sorted(Comparator.comparing(DuoSecurityAuthenticationHandler::getOrder))
             .collect(Collectors.toList());
     }
@@ -159,9 +165,11 @@ public class DuoSecurityAuthenticationEventExecutionPlanConfiguration {
 
     @ConditionalOnMissingBean(name = "duoSecurityAuthenticationEventExecutionPlanConfigurer")
     @Bean
-    public AuthenticationEventExecutionPlanConfigurer duoSecurityAuthenticationEventExecutionPlanConfigurer() {
+    public AuthenticationEventExecutionPlanConfigurer duoSecurityAuthenticationEventExecutionPlanConfigurer(
+        @Qualifier("casApplicationContextProvider") ApplicationContextProvider casApplicationContextProvider
+    ) {
         return plan -> {
-            duoAuthenticationHandlers()
+            duoAuthenticationHandlers(casApplicationContextProvider)
                 .forEach(dh -> {
                     plan.registerAuthenticationHandler(dh);
                     plan.registerAuthenticationMetadataPopulator(duoAuthenticationMetaDataPopulator(dh));
