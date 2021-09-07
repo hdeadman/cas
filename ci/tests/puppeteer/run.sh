@@ -91,6 +91,18 @@ if [[ $project == starter* ]]; then
   projectType=jar
 fi
 
+requiredEnvVars=$(cat "${config}" | jq -j '.requiredEnvVars // empty | join (" ")')
+echo "[${requiredEnvVars}]"
+if [[ ! -z "${requiredEnvVars}" ]]; then
+  for var in ${requiredEnvVars} ; do
+    envvar=$(printenv $var)
+    if [[ -z $envvar ]]; then
+      echo "Skipping test because required environment variable [$var] is not defined."
+      exit 0
+    fi
+  done
+fi
+
 casWebApplicationFile="${PWD}/webapp/cas-server-webapp-${project}/build/libs/cas-server-webapp-${project}-${casVersion}.${projectType}"
 if [[ ! -f "$casWebApplicationFile" ]]; then
   printyellow "CAS web application at ${casWebApplicationFile} cannot be found. Rebuilding..."

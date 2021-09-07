@@ -20,6 +20,9 @@
     "--cas.monitor.endpoints.endpoint.defaults.access=ANONYMOUS",
     "--management.endpoints.web.exposure.include=duoPing,duoAccountStatus,duoAdmin",
     "--management.endpoints.enabled-by-default=true"
+  ],
+  "requiredEnvVars": [
+    "DUO_SECURITY_API_HOST", "DUO_SECURITY_ADMIN_SKEY", "DUO_SECURITY_ADMIN_IKEY"
   ]
 }
 

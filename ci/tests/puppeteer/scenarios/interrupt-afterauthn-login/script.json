@@ -24,5 +24,8 @@
     "--management.endpoints.enabled-by-default=true",
 
     "--cas.interrupt.json.location=file:${PWD}/ci/tests/puppeteer/scenarios/${SCENARIO}/accounts.json"
+  ],
+  "requiredEnvVars": [
+    "DUO_SECURITY_API_HOST", "DUO_SECURITY_UNIVERSAL_PROMPT_SKEY", "DUO_SECURITY_UNIVERSAL_PROMPT_IKEY"
   ]
 }
