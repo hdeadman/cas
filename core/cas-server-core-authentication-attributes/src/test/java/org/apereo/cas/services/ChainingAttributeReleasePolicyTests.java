@@ -36,9 +36,12 @@ public class ChainingAttributeReleasePolicyTests {
     private ConfigurableApplicationContext applicationContext;
 
     @Autowired
+    @Qualifier("applicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
+
+    @Autowired
     @Qualifier("scriptResourceCacheManager")
     private ScriptResourceCacheManager<String, ExecutableCompiledGroovyScript> scriptResourceCacheManager;
-
 
     private ChainingAttributeReleasePolicy chain;
 

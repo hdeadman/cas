@@ -2,6 +2,7 @@ package org.apereo.cas.hibernate;
 
 import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 
 import lombok.val;
 import org.hibernate.boot.model.naming.Identifier;
@@ -9,6 +10,7 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
@@ -35,6 +37,10 @@ import static org.mockito.Mockito.*;
 public class CasHibernatePhysicalNamingStrategyTests {
     @Autowired
     private ConfigurableApplicationContext applicationContext;
+
+    @Autowired
+    @Qualifier("applicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
 
     @Test
     public void verifyMappedTable() {
