@@ -35,6 +35,8 @@ import static org.mockito.Mockito.*;
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @Tag("JDBC")
 public class CasHibernatePhysicalNamingStrategyTests {
+
+    @SuppressWarnings("unused")
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 

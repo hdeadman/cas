@@ -35,6 +35,7 @@ public class ChainingAttributeReleasePolicyTests {
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 
+    @SuppressWarnings("unused")
     @Autowired
     @Qualifier("applicationContextProvider")
     private ApplicationContextProvider applicationContextProvider;
