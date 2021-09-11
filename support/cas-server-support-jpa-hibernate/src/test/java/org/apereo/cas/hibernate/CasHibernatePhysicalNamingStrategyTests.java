@@ -36,10 +36,10 @@ import static org.mockito.Mockito.*;
 @Tag("JDBC")
 public class CasHibernatePhysicalNamingStrategyTests {
 
-    @SuppressWarnings("unused")
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 
+    @SuppressWarnings("unused")
     @Autowired
     @Qualifier("applicationContextProvider")
     private ApplicationContextProvider applicationContextProvider;
