@@ -42,7 +42,6 @@ import java.time.ZonedDateTime;
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 public class CasCoreUtilConfiguration {
 
-public class CasCoreUtilConfiguration {
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public ApplicationContextProvider casApplicationContextProvider() {
