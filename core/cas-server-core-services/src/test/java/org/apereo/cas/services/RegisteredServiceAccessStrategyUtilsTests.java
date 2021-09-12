@@ -1,12 +1,16 @@
 package org.apereo.cas.services;
 
 import org.apereo.cas.authentication.PrincipalException;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.ticket.ServiceTicket;
 import org.apereo.cas.ticket.TicketGrantingTicket;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 
 import lombok.val;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -22,6 +26,13 @@ import static org.mockito.Mockito.*;
  */
 @Tag("Utility")
 public class RegisteredServiceAccessStrategyUtilsTests {
+
+    @BeforeAll
+    public static void initialize() {
+        val context = mock(ConfigurableApplicationContext.class);
+        when(context.getBean(CasConfigurationProperties.class)).thenReturn(new CasConfigurationProperties());
+        ApplicationContextProvider.holdApplicationContext(context);
+    }
 
     @Test
     public void verifyExpired() {

@@ -7,6 +7,7 @@ import org.apereo.cas.services.RegisteredServiceTestUtils;
 import org.apereo.cas.trusted.AbstractMultifactorAuthenticationTrustStorageTests;
 import org.apereo.cas.trusted.util.MultifactorAuthenticationTrustUtils;
 import org.apereo.cas.util.HttpRequestUtils;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
 
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -47,6 +49,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MultifactorAuthenticationVerifyTrustActionTests extends AbstractMultifactorAuthenticationTrustStorageTests {
     @Autowired
     private CasConfigurationProperties casProperties;
+
+    @SuppressWarnings("unused")
+    @Autowired
+    @Qualifier("casApplicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
 
     @Test
     @Order(1)

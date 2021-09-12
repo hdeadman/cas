@@ -1,13 +1,17 @@
 package org.apereo.cas.services;
 
 import org.apereo.cas.authentication.CoreAuthenticationTestUtils;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.util.serialization.JacksonObjectMapperFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
@@ -15,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Misagh Moayyed
@@ -26,6 +32,13 @@ public class GroovyScriptAttributeReleasePolicyTests {
 
     private static final ObjectMapper MAPPER = JacksonObjectMapperFactory.builder()
         .defaultTypingEnabled(true).build().toObjectMapper();
+
+    @BeforeAll
+    public static void initialize() {
+        val context = mock(ConfigurableApplicationContext.class);
+        when(context.getBean(CasConfigurationProperties.class)).thenReturn(new CasConfigurationProperties());
+        ApplicationContextProvider.holdApplicationContext(context);
+    }
 
     @Test
     public void verifySerializeAGroovyScriptAttributeReleasePolicyToJson() throws IOException {

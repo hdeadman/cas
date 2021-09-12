@@ -16,11 +16,11 @@ import lombok.val;
 import org.apereo.services.persondir.IPersonAttributes;
 import org.apereo.services.persondir.support.MergingPersonAttributeDaoImpl;
 import org.apereo.services.persondir.support.StubPersonAttributeDao;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -67,10 +67,10 @@ public class RegisteredServiceAttributeReleasePolicyTests {
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 
-    @BeforeAll
-    public void initContext() {
-        ApplicationContextProvider.holdApplicationContext(applicationContext);
-    }
+    @SuppressWarnings("unused")
+    @Autowired
+    @Qualifier("casApplicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
 
     @Test
     public void verifyMappedAttributeFilterMappedAttributesIsCaseInsensitive() {
