@@ -1,12 +1,16 @@
 package org.apereo.cas.scripting;
 
 import org.apereo.cas.authentication.CoreAuthenticationTestUtils;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ScriptedRegisteredServiceAttributeReleasePolicy;
 import org.apereo.cas.util.scripting.ScriptingUtils;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 
 import lombok.val;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -15,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * This is {@link ScriptEngineManagerTests}.
@@ -26,6 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("Groovy")
 @Deprecated(since = "6.2.0")
 public class ScriptEngineManagerTests {
+
+    @BeforeAll
+    public static void initialize() {
+        val context = mock(ConfigurableApplicationContext.class);
+        when(context.getBean(CasConfigurationProperties.class)).thenReturn(new CasConfigurationProperties());
+        ApplicationContextProvider.holdApplicationContext(context);
+    }
+
     private static void runAttributeFilterInternallyFor(final String s) {
         val filter = new ScriptedRegisteredServiceAttributeReleasePolicy(s);
         val principal = CoreAuthenticationTestUtils.getPrincipal("cas", Collections.singletonMap("attribute", List.of("value")));

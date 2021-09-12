@@ -5,6 +5,7 @@ import org.apereo.cas.config.CasCoreUtilConfiguration;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.serialization.JacksonObjectMapperFactory;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
@@ -12,6 +13,8 @@ import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
@@ -40,6 +43,11 @@ public class PrincipalAttributeRegisteredServiceUsernameProviderTests {
 
     private static final ObjectMapper MAPPER = JacksonObjectMapperFactory.builder()
         .defaultTypingEnabled(true).build().toObjectMapper();
+
+    @SuppressWarnings("unused")
+    @Autowired
+    @Qualifier("casApplicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
 
     @Test
     public void verifyUsernameByPrincipalAttributeWithMapping() {
