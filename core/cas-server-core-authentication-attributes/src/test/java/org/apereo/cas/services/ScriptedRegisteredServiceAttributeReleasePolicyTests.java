@@ -1,15 +1,21 @@
 package org.apereo.cas.services;
 
 import org.apereo.cas.CoreAttributesTestUtils;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 
 import lombok.val;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * This is {@link ScriptedRegisteredServiceAttributeReleasePolicyTests}.
@@ -21,6 +27,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("Groovy")
 @Deprecated(since = "6.2.0")
 public class ScriptedRegisteredServiceAttributeReleasePolicyTests {
+
+    @BeforeAll
+    public static void initialize() {
+        val context = mock(ConfigurableApplicationContext.class);
+        when(context.getBean(CasConfigurationProperties.class)).thenReturn(new CasConfigurationProperties());
+        ApplicationContextProvider.holdApplicationContext(context);
+    }
 
     @Test
     public void verifyInlineScript() {
