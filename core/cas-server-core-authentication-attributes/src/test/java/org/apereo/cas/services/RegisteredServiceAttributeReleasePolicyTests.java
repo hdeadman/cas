@@ -16,6 +16,7 @@ import lombok.val;
 import org.apereo.services.persondir.IPersonAttributes;
 import org.apereo.services.persondir.support.MergingPersonAttributeDaoImpl;
 import org.apereo.services.persondir.support.StubPersonAttributeDao;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -65,6 +66,11 @@ public class RegisteredServiceAttributeReleasePolicyTests {
 
     @Autowired
     private ConfigurableApplicationContext applicationContext;
+
+    @BeforeAll
+    public void initContext() {
+        ApplicationContextProvider.holdApplicationContext(applicationContext);
+    }
 
     @Test
     public void verifyMappedAttributeFilterMappedAttributesIsCaseInsensitive() {

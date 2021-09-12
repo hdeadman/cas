@@ -138,7 +138,10 @@ public class ApplicationContextProvider implements ApplicationContextAware {
      * @return the script resource cache manager
      */
     public static Optional<ScriptResourceCacheManager<String, ExecutableCompiledGroovyScript>> getScriptResourceCacheManager() {
-        if (CONTEXT != null && CONTEXT.containsBean(ScriptResourceCacheManager.BEAN_NAME)) {
+        if (CONTEXT == null) {
+            throw new IllegalStateException("Application context not set in ApplicationContextProvider.");
+        }
+        if (CONTEXT.containsBean(ScriptResourceCacheManager.BEAN_NAME)) {
             return Optional.of(CONTEXT.getBean(ScriptResourceCacheManager.BEAN_NAME, ScriptResourceCacheManager.class));
         }
         return Optional.empty();
@@ -150,7 +153,10 @@ public class ApplicationContextProvider implements ApplicationContextAware {
      * @return the attribute definition store
      */
     public static Optional<AttributeDefinitionStore> getAttributeDefinitionStore() {
-        if (CONTEXT != null && CONTEXT.containsBean(AttributeDefinitionStore.BEAN_NAME)) {
+        if (CONTEXT == null) {
+            throw new IllegalStateException("Application context not set in ApplicationContextProvider.");
+        }
+        if (CONTEXT.containsBean(AttributeDefinitionStore.BEAN_NAME)) {
             return Optional.of(CONTEXT.getBean(AttributeDefinitionStore.BEAN_NAME, AttributeDefinitionStore.class));
         }
         return Optional.empty();
@@ -162,7 +168,10 @@ public class ApplicationContextProvider implements ApplicationContextAware {
      * @return the principal attributes repository
      */
     public static Optional<RegisteredServicePrincipalAttributesRepository> getPrincipalAttributesRepository() {
-        if (CONTEXT != null && CONTEXT.containsBean(PrincipalResolver.BEAN_NAME_GLOBAL_PRINCIPAL_ATTRIBUTE_REPOSITORY)) {
+        if (CONTEXT == null) {
+            throw new IllegalStateException("Application context not set in ApplicationContextProvider.");
+        }
+        if (CONTEXT.containsBean(PrincipalResolver.BEAN_NAME_GLOBAL_PRINCIPAL_ATTRIBUTE_REPOSITORY)) {
             return Optional.of(CONTEXT.getBean(PrincipalResolver.BEAN_NAME_GLOBAL_PRINCIPAL_ATTRIBUTE_REPOSITORY,
                 RegisteredServicePrincipalAttributesRepository.class));
         }
@@ -175,7 +184,10 @@ public class ApplicationContextProvider implements ApplicationContextAware {
      * @return the principal attributes repository cache
      */
     public static Optional<PrincipalAttributesRepositoryCache> getPrincipalAttributesRepositoryCache() {
-        if (CONTEXT != null && CONTEXT.containsBean(PrincipalAttributesRepositoryCache.DEFAULT_BEAN_NAME)) {
+        if (CONTEXT == null) {
+            throw new IllegalStateException("Application context not set in ApplicationContextProvider.");
+        }
+        if (CONTEXT.containsBean(PrincipalAttributesRepositoryCache.DEFAULT_BEAN_NAME)) {
             return Optional.of(CONTEXT.getBean(PrincipalAttributesRepositoryCache.DEFAULT_BEAN_NAME,
                 PrincipalAttributesRepositoryCache.class));
         }
