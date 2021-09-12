@@ -41,7 +41,7 @@ public class CasHibernatePhysicalNamingStrategyTests {
 
     @SuppressWarnings("unused")
     @Autowired
-    @Qualifier("applicationContextProvider")
+    @Qualifier("casApplicationContextProvider")
     private ApplicationContextProvider applicationContextProvider;
 
     @Test
