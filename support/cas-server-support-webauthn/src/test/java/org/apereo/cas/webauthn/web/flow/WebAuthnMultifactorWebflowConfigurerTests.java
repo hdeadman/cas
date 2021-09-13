@@ -1,5 +1,7 @@
 package org.apereo.cas.webauthn.web.flow;
 
+import org.apereo.cas.config.CasCoreUtilConfiguration;
+import org.apereo.cas.util.spring.ApplicationContextProvider;
 import org.apereo.cas.web.flow.configurer.BaseMultifactorWebflowConfigurerTests;
 
 import lombok.Getter;
@@ -15,7 +17,10 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
  * @author Misagh Moayyed
  * @since 6.3.0
  */
-@SpringBootTest(classes = BaseWebAuthnWebflowTests.SharedTestConfiguration.class,
+@SpringBootTest(classes = {
+        BaseWebAuthnWebflowTests.SharedTestConfiguration.class,
+        CasCoreUtilConfiguration.class
+    },
     properties = {
         "cas.authn.mfa.web-authn.core.allowed-origins=https://localhost:8443",
         "cas.authn.mfa.web-authn.core.application-id=https://localhost:8443",
@@ -29,6 +34,11 @@ public class WebAuthnMultifactorWebflowConfigurerTests extends BaseMultifactorWe
     @Autowired
     @Qualifier("webAuthnFlowRegistry")
     private FlowDefinitionRegistry multifactorFlowDefinitionRegistry;
+
+    @SuppressWarnings("unused")
+    @Autowired
+    @Qualifier("casApplicationContextProvider")
+    private ApplicationContextProvider applicationContextProvider;
 
     @Override
     protected String getMultifactorEventId() {
