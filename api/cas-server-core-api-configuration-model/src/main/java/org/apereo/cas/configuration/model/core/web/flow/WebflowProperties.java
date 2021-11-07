@@ -66,5 +66,5 @@ public class WebflowProperties implements Serializable {
     /**
      * Whether to disable flow debug listener.
      */
-    private boolean flowDebugEnabled = true;
+    private boolean flowDebugEnabled = false;
 }
