@@ -75,8 +75,6 @@ public class CasWebflowContextConfiguration {
 
     private static final int LOGOUT_FLOW_HANDLER_ORDER = 3;
 
-    private static final FlowExecutionListener[] FLOW_EXECUTION_LISTENERS = new FlowExecutionListener[0];
-
     @Autowired
     private CasConfigurationProperties casProperties;
 
@@ -102,6 +100,16 @@ public class CasWebflowContextConfiguration {
     @Autowired
     @Qualifier("mvcResourceUrlProvider")
     private ObjectProvider<ResourceUrlProvider> resourceUrlProvider;
+
+    @Bean
+    @Lazy(false)
+    public FlowExecutionListener[] flowExecutionListeners() {
+        if (casProperties.getWebflow().isFlowDebugEnabled()) {
+            val flowExecutionCountMax = casProperties.getWebflow().getFlowExecutionCountMax();
+            return new FlowExecutionListener[]{new DebugFlowExecutionListener(flowExecutionCountMax)};
+        }
+        return new FlowExecutionListener[0];
+    }
 
     @Bean
     @Lazy(false)
@@ -247,7 +255,7 @@ public class CasWebflowContextConfiguration {
     @Lazy(false)
     public FlowExecutor logoutFlowExecutor() {
         val factory = new WebflowExecutorFactory(casProperties.getWebflow(),
-            logoutFlowRegistry(), this.webflowCipherExecutor.getObject(), FLOW_EXECUTION_LISTENERS);
+            logoutFlowRegistry(), this.webflowCipherExecutor.getObject(), flowExecutionListeners());
         return factory.build();
     }
 
@@ -257,7 +265,7 @@ public class CasWebflowContextConfiguration {
     public FlowExecutor loginFlowExecutor() {
         val factory = new WebflowExecutorFactory(casProperties.getWebflow(),
             loginFlowRegistry(), this.webflowCipherExecutor.getObject(),
-            FLOW_EXECUTION_LISTENERS);
+            flowExecutionListeners());
 
         return factory.build();
     }
