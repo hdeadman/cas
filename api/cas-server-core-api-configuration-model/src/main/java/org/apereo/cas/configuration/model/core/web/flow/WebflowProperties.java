@@ -57,4 +57,14 @@ public class WebflowProperties implements Serializable {
      */
     @NestedConfigurationProperty
     private GroovyWebflowProperties groovy = new GroovyWebflowProperties();
+
+    /**
+     * Number of flow executions before logging begins.
+     */
+    private int flowExecutionCountMax = 100;
+
+    /**
+     * Whether to disable flow debug listener.
+     */
+    private boolean flowDebugEnabled = true;
 }
