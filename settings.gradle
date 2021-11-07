@@ -19,7 +19,7 @@ buildCache {
 
 dependencyResolutionManagement {
     repositories {
-        mavenLocal()
+        //mavenLocal()
         mavenCentral()
         maven {
             url "https://build.shibboleth.net/nexus/content/repositories/releases"
