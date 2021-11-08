@@ -87,7 +87,7 @@ nexusPublishing {
             password = "${repositoryPassword}"
         }
     }
-    
+    useStaging = providers.systemProperty("useStaging").forUseAtConfigurationTime().getOrElse("true") == "true"
     clientTimeout = java.time.Duration.ofSeconds(120)
     connectTimeout = java.time.Duration.ofSeconds(120)
     transitionCheckOptions {
