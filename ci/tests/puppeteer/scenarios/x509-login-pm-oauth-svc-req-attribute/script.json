@@ -1,5 +1,5 @@
 {
-  "dependencies": "x509-webflow,saml-idp,rest-x509,ldap,person-directory,oidc,pm,pm-ldap,pm-webflow,aup-webflow,oauth-webflow,json-service-registry,authy",
+  "dependencies": "x509,x509-core,x509-webflow,saml-idp,rest-x509,ldap,person-directory,oidc,pm,pm-ldap,pm-webflow,aup-webflow,oauth-webflow,json-service-registry,authy",
   "properties": [
     "--cas.service-registry.core.init-from-json=true",
     "--cas.service-registry.json.location=file:${PWD}/ci/tests/puppeteer/scenarios/${SCENARIO}/services",
