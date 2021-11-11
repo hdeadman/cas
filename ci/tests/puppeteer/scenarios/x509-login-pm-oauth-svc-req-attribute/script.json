@@ -41,6 +41,12 @@
     "--cas.authn.attribute-repository.core.merger=MULTIVALUED",
     "--cas.authn.attribute-repository.core.default-attributes-to-release=allowedaccess,someattribute,anotherattribute,ldap-dn,uid,user-account-control,x509Rfc822Email,x509subjectUPN",
 
+
+    "--cas.authn.ldap[0].passwordPolicy.type=AD",
+    "--cas.authn.ldap[0].passwordPolicy.enabled=true",
+    "--cas.authn.ldap[0].passwordPolicy.warning-days=${profile.pm-warning-days:45}",
+
+
     "--cas.authn.pm.core.enabled=true",
     "--cas.authn.pm.core.policy-pattern=^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@^$!#%*?&()])[A-Za-z\\d$@^$!#%*?&()]{16,256}",
     "--cas.authn.pm.ldap[0].type=AD",
