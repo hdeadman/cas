@@ -59,7 +59,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void sessionCreating(final RequestContext context, final FlowDefinition definition) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("sessionCreating: context = [{}], definition = [{}]", context, definition);
+            LOGGER.warn("sessionCreating: definition = [{}], context = [{}]", definition, context);
         }
     }
 
@@ -73,7 +73,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void sessionStarting(final RequestContext context, final FlowSession session, final MutableAttributeMap<?> input) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("sessionCreating: context = [{}], session = [{}]", context, session);
+            LOGGER.warn("sessionCreating: session = [{}], context = [{}]", session, context);
         }
     }
 
@@ -85,7 +85,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void sessionStarted(final RequestContext context, final FlowSession session) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("sessionStarted: id = [{}], context = [{}], session = [{}]", getFlowId(context), context, session);
+            LOGGER.warn("sessionStarted: flow id = [{}], session = [{}], context = [{}]", getFlowId(context), session, context);
         }
     }
 
@@ -96,7 +96,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void eventSignaled(final RequestContext context, final Event event) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("eventSignaled: id = [{}], context = [{}], event = [{}]", getFlowId(context), context, event);
+            LOGGER.warn("eventSignaled: flow id = [{}], event = [{}], context = [{}]", getFlowId(context), event, context);
         }
     }
 
@@ -107,7 +107,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void transitionExecuting(final RequestContext context, final TransitionDefinition transition) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("transitionExecuting: id = [{}], context = [{}], transition = [{}]", getFlowId(context), context, transition);
+            LOGGER.warn("transitionExecuting: flow id = [{}], transition = [{}], context = [{}]", getFlowId(context), transition, context);
         }
     }
 
@@ -119,7 +119,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void stateEntering(final RequestContext context, final StateDefinition state) throws EnterStateVetoException {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("stateEntering: id = [{}], context = [{}], state = [{}]", getFlowId(context), context, state);
+            LOGGER.warn("stateEntering: flow id = [{}], state = [{}], context = [{}]", getFlowId(context), state, context);
         }
     }
 
@@ -131,7 +131,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void stateEntered(final RequestContext context, final StateDefinition previousState, final StateDefinition state) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("stateEntering: id = [{}], context = [{}], state = [{}]", getFlowId(context), context, state);
+            LOGGER.warn("stateEntering: flow id = [{}], state = [{}], context = [{}]", getFlowId(context), state, context);
         }
     }
 
@@ -143,7 +143,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void viewRendering(final RequestContext context, final View view, final StateDefinition viewState) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("viewRendering: id = [{}], context = [{}], view = [{}], viewState = [{}]", getFlowId(context), context, view, viewState);
+            LOGGER.warn("viewRendering: flow id = [{}], view = [{}], viewState = [{}], context = [{}]", getFlowId(context), view, viewState, context);
         }
     }
 
@@ -155,7 +155,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void viewRendered(final RequestContext context, final View view, final StateDefinition viewState) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("viewRendered: id = [{}], context = [{}], view = [{}], viewState = [{}]", getFlowId(context), context, view, viewState);
+            LOGGER.warn("viewRendered: flow id = [{}], view = [{}], viewState = [{}], context = [{}]", getFlowId(context), view, viewState, context);
         }
     }
 
@@ -189,7 +189,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void sessionEnding(final RequestContext context, final FlowSession session, final String outcome, final MutableAttributeMap<?> output) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("sessionEnding: id = [{}], context = [{}], session = [{}], outcome = [{}], output = [{}]", getFlowId(context), context, session, outcome, output);
+            LOGGER.warn("sessionEnding: flow id = [{}], session = [{}], outcome = [{}], output = [{}], context = [{}]", getFlowId(context), session, outcome, output, context);
         }
     }
 
@@ -203,7 +203,7 @@ public class DebugFlowExecutionListener implements FlowExecutionListener {
      */
     public void sessionEnded(final RequestContext context, final FlowSession session, final String outcome, final AttributeMap<?> output) {
         if (incrementFlowCounter() > flowExecutionMax) {
-            LOGGER.warn("sessionEnded: id = [{}], context = [{}], session = [{}], outcome = [{}], output = [{}]", getFlowId(context), context, session, outcome, output);
+            LOGGER.warn("sessionEnded: flow id = [{}], session = [{}], outcome = [{}], output = [{}], context = [{}]", getFlowId(context), session, outcome, output, context);
         }
     }
 
