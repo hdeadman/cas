@@ -36,6 +36,8 @@
     "--cas.authn.x509.principal-type=RFC822_EMAIL",
     "--cas.authn.x509.principal.principal-attribute=x509Rfc822Email,subjectDn",
     "--cas.authn.x509.subject-alt-name.alternate-principal-attribute=subjectDn",
+    "--cas.authn.x509.revocation-checker=NONE",
+    "--cas.authn.x509.principal.returnNull=false",
 
     "--cas.authn.attribute-repository.core.aggregation=CASCADE",
     "--cas.authn.attribute-repository.core.merger=MULTIVALUED",
