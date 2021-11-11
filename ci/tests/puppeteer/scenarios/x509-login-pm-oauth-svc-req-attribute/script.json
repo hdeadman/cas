@@ -44,8 +44,7 @@
 
     "--cas.authn.ldap[0].passwordPolicy.type=AD",
     "--cas.authn.ldap[0].passwordPolicy.enabled=true",
-    "--cas.authn.ldap[0].passwordPolicy.warning-days=${profile.pm-warning-days:45}",
-
+    "--cas.authn.ldap[0].passwordPolicy.warning-days=1",
 
     "--cas.authn.pm.core.enabled=true",
     "--cas.authn.pm.core.policy-pattern=^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@^$!#%*?&()])[A-Za-z\\d$@^$!#%*?&()]{16,256}",
