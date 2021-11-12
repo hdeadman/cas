@@ -23,6 +23,5 @@
     "--cas.authn.attribute-repository.groovy[0].order=2",
     "--cas.authn.attribute-repository.groovy[0].case-insensitive=false"
   ],
-  "initScript": "${PWD}/ci/tests/puppeteer/scenarios/${SCENARIO}/init.sh",
   "trustStoreCertificateFile": "./ci/tests/puppeteer/scenarios/x509-login/cert.pem"
 }
