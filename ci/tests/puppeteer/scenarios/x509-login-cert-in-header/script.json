@@ -1,7 +1,10 @@
 {
-  "dependencies": "x509-webflow",
+  "dependencies": "x509-webflow,json-service-registry",
   "properties": [
     "--logging.level.org.apereo.cas=debug",
+
+    "--cas.service-registry.core.init-from-json=true",
+    "--cas.service-registry.json.location=file:${PWD}/ci/tests/puppeteer/scenarios/${SCENARIO}/services",
 
     "--cas.authn.attribute-repository.stub.attributes.uid=casuser",
     "--cas.authn.attribute-repository.stub.attributes.mail=casuser@example.org",
@@ -23,5 +26,5 @@
     "--cas.authn.attribute-repository.groovy[0].order=2",
     "--cas.authn.attribute-repository.groovy[0].case-insensitive=false"
   ],
-  "trustStoreCertificateFile": "./ci/tests/puppeteer/scenarios/x509-login/cert.pem"
+  "trustStoreCertificateFile": "./ci/tests/puppeteer/scenarios/x509-login-cert-in-header/cert.pem"
 }

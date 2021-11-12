@@ -15,7 +15,9 @@ const fs = require('fs');
     console.log(`Certificate file: ${config.trustStoreCertificateFile}`);
 
     const certBuffer = fs.readFileSync(config.trustStoreCertificateFile);
-    const certHeader = certBuffer.toString().replace(/\n/g, " ");
+    const certHeader = certBuffer.toString().replace(/\n/g, " ").replace(/\r/g,"");
+
+    console.log(`ssl-client-cert-from-proxy: ${certHeader}`);
 
     page.on('request', request => {
         let data = {
@@ -36,9 +38,13 @@ const fs = require('fs');
 
     await page.goto("https://localhost:8443/cas/login?service=https://github.com");
     await page.waitForTimeout(5000)
-    await cas.assertInnerText(page, '#content h2', "Application Not Authorized to Use CAS");
-
+    await assertFailure(page);
     await browser.close();
 })();
+
+async function assertFailure(page) {
+    await cas.assertInnerText(page, "#loginErrorsPanel p", "Service access denied due to missing privileges.")
+    await page.waitForTimeout(1000)
+}
 
 
