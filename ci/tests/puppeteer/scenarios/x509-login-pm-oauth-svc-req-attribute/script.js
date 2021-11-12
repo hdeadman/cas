@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const assert = require('assert');
 const cas = require('../../cas.js');
 const fs = require('fs');
-const request = require('request');
 
 (async () => {
     let browser = await puppeteer.launch(cas.browserOptions());
@@ -26,35 +25,19 @@ const request = require('request');
     assert(config != null)
 
     console.log(`Certificate file: ${config.trustStoreCertificateFile}`);
-    console.log(`Private key file: ${config.trustStorePrivateKeyFile}`);
 
-    const cert = fs.readFileSync(config.trustStoreCertificateFile);
-    const key = fs.readFileSync(config.trustStorePrivateKeyFile);
+    const certBuffer = fs.readFileSync(config.trustStoreCertificateFile);
+    const certHeader = certBuffer.toString().replace(/\n/g, " ");
 
-    page.on('request', interceptedRequest => {
-        const options = {
-            uri: interceptedRequest.url(),
-            method: interceptedRequest.method(),
-            headers: interceptedRequest.headers(),
-            body: interceptedRequest.postData(),
-            cert: cert,
-            key: key
+    page.on('request', request => {
+        let data = {
+            'method': 'GET',
+            'headers': {
+                ...request.headers(),
+                'ssl-client-cert-from-proxy': certHeader
+            },
         };
-
-        request(options, function (err, resp, body) {
-            if (err) {
-                console.error(`Unable to call ${options.uri}`, err);
-                return interceptedRequest.abort('connectionrefused');
-            }
-
-            interceptedRequest.respond({
-                status: resp.statusCode,
-                contentType: resp.headers['content-type'],
-                headers: resp.headers,
-                body: body
-            });
-        });
-
+        request.continue(data);
     });
 
     await page.goto("https://localhost:8443/cas/login?service=https://github.com");
