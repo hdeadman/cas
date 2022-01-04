@@ -60,7 +60,6 @@ public class CasWebApplication {
             .banner(banner)
             .web(WebApplicationType.SERVLET)
             .logStartupInfo(true)
-            .contextFactory(webApplicationType -> new CasWebApplicationContext())
             .applicationStartup(CasEmbeddedContainerUtils.getApplicationStartup())
             .run(args);
     }

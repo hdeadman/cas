@@ -21,12 +21,5 @@ public class CasWebApplicationServletInitializer extends AbstractCasSpringBootSe
             CasEmbeddedContainerUtils.getCasBannerInstance(),
             CasEmbeddedContainerUtils.getApplicationStartup());
     }
-
-    @Override
-    protected SpringApplicationBuilder configure(final SpringApplicationBuilder givenBuilder) {
-        val builder = super.configure(givenBuilder);
-        builder.contextFactory(webApplicationType -> new CasWebApplicationContext());
-        return builder;
-    }
 }
 
