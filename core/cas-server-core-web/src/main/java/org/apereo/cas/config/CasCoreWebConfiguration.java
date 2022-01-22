@@ -13,6 +13,7 @@ import org.apereo.cas.web.support.ArgumentExtractor;
 import org.apereo.cas.web.support.DefaultArgumentExtractor;
 import org.apereo.cas.web.view.CasReloadableMessageBundle;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
  */
 @Configuration(value = "CasCoreWebConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
+@Slf4j
 public class CasCoreWebConfiguration {
 
     @Configuration(value = "CasCoreWebMessageSourceConfiguration", proxyBeanMethods = false)
@@ -91,6 +93,7 @@ public class CasCoreWebConfiguration {
             bean.setUseCodeAsDefaultMessage(mb.isUseCodeMessage());
             bean.setBasenames(mb.getBaseNames().toArray(ArrayUtils.EMPTY_STRING_ARRAY));
             bean.setCommonMessages(casCommonMessages);
+            LOGGER.warn("Loading the message source!!!", new Exception("Dummy"));
             return bean;
         }
     }
