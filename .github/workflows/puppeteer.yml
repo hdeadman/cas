@@ -30,7 +30,7 @@ env:
 on:
   push:
     branches:
-      - 6.6.x-HD
+      - '6.6.x.*'
       - '!**.**.**'
       - 'pr-*'
   pull_request:
