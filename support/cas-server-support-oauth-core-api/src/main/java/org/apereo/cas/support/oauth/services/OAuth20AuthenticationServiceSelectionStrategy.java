@@ -84,11 +84,15 @@ public class OAuth20AuthenticationServiceSelectionStrategy extends BaseAuthentic
 
     @Override
     public boolean supports(final Service service) {
+        if (service == null) {
+            return false;
+        }
         val svc = getServicesManager().findServiceBy(service);
         val res = svc != null && service.getId().startsWith(this.callbackUrl);
-        val msg = String.format("Authentication request is%s identified as an OAuth request. Service Id: [%s] Callback URL: [%s]",
-            BooleanUtils.toString(res, StringUtils.EMPTY, " not"), service.getId(), this.callbackUrl);
-        LOGGER.trace(msg);
+        LOGGER.trace("Authentication request is{} identified as an OAuth request. Service Id: [{}] Callback URL: [{}]",
+                BooleanUtils.toString(res, StringUtils.EMPTY, " not"),
+                service.getId(),
+                this.callbackUrl);
         return res;
     }
 
