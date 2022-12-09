@@ -122,7 +122,9 @@ public class CasThymeleafConfiguration {
         val templatePrefixes = casProperties.getView().getTemplatePrefixes();
         templatePrefixes.forEach(prefix -> {
             try {
-                val prefixPath = ResourceUtils.getFile(prefix).getCanonicalPath();
+                val prefixPath = prefix.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX)
+                        ? prefix
+                        : ResourceUtils.getFile(prefix).getCanonicalPath();
                 val viewPath = StringUtils.appendIfMissing(prefixPath, "/");
                 val theme = prefix.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX)
                     ? new ThemeClassLoaderTemplateResolver(themeResolver)
