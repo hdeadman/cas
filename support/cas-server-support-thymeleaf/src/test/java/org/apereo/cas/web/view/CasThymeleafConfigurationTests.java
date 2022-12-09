@@ -28,8 +28,14 @@ public class CasThymeleafConfigurationTests {
     @Qualifier("chainingTemplateViewResolver")
     private AbstractTemplateResolver chainingTemplateViewResolver;
 
+    /**
+     * Ensure that there are seven resolvers.
+     * One for rest, two for each template prefix, and then one ThemeClassLoaderTemplateResolver
+     * and a ClassLoaderTemplateResolver.
+     */
     @Test
     public void verifyOperation() {
         assertNotNull(chainingTemplateViewResolver);
+        assertEquals(7, ((ChainingTemplateViewResolver) chainingTemplateViewResolver).getResolvers().size());
     }
 }
