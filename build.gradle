@@ -653,11 +653,12 @@ tasks.register('verifyRequiredJavaVersion') {
 boolean projectShouldBePublished(Project project) {
     def publishable = !["api", "core", "docs", "support", "webapp"].contains(project.name)
             && !project.getPath().contains("cas-server-documentation")
+    project.ext.publishable = publishable
     if ("${releaseRepositoryUrl}".contains("github.com") && project.getPath().contains("cas-server-support-shell")) {
         // shell is too big for github
-        publishable = false
+        return false
     }
-    project.ext.publishable = publishable
+    return publishable
 }
 
 boolean projectRequiresLombok(Project project) {
