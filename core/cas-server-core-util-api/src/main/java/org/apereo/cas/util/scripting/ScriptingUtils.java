@@ -314,7 +314,11 @@ public class ScriptingUtils {
             }
             LoggingUtils.error(LOGGER, e);
         } finally {
-            LOGGER.trace("Parsing groovy script took [{}] millis", System.currentTimeMillis() - startTime);
+            try {
+                LOGGER.trace("Parsing groovy script [{}] took [{}] millis", groovyScript.getURI().getPath(), System.currentTimeMillis() - startTime);
+            } catch (final IOException e) {
+                LOGGER.trace("Error getting URI from groovy script");
+            }
         }
 
         return null;
