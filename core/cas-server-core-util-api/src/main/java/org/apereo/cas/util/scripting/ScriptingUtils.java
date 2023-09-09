@@ -299,6 +299,7 @@ public class ScriptingUtils {
      */
     public static GroovyObject parseGroovyScript(final Resource groovyScript,
                                                  final boolean failOnError) {
+        val startTime = System.currentTimeMillis();
         val parent = ScriptingUtils.class.getClassLoader();
         try (val loader = new GroovyClassLoader(parent)) {
             val groovyClass = loadGroovyClass(groovyScript, loader);
@@ -312,7 +313,10 @@ public class ScriptingUtils {
                 throw new RuntimeException(e);
             }
             LoggingUtils.error(LOGGER, e);
+        } finally {
+            LOGGER.trace("Parsing groovy script took [{}] millis", System.currentTimeMillis() - startTime);
         }
+
         return null;
     }
 
@@ -462,20 +466,20 @@ public class ScriptingUtils {
             }
 
             val script = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
-            val classLoader = new GroovyClassLoader(ScriptingUtils.class.getClassLoader(),
-                new CompilerConfiguration(), true);
-            val clazz = classLoader.parseClass(script);
+            try (val classLoader = new GroovyClassLoader(ScriptingUtils.class.getClassLoader(),
+                new CompilerConfiguration(), true);) {
+                val clazz = classLoader.parseClass(script);
 
-            LOGGER.trace("Preparing constructor arguments [{}] for resource [{}]", args, resource);
-            val ctor = clazz.getDeclaredConstructor(constructorArgs);
-            val result = ctor.newInstance(args);
-
-            if (!expectedType.isAssignableFrom(result.getClass())) {
-                throw new ClassCastException("Result [" + result
-                                             + " is of type " + result.getClass()
-                                             + " when we were expecting " + expectedType);
+                LOGGER.trace("Preparing constructor arguments [{}] for resource [{}]", args, resource);
+                val ctor = clazz.getDeclaredConstructor(constructorArgs);
+                val result = ctor.newInstance(args);
+                if (!expectedType.isAssignableFrom(result.getClass())) {
+                    throw new ClassCastException("Result [" + result
+                        + " is of type " + result.getClass()
+                        + " when we were expecting " + expectedType);
+                }
+                return (T) result;
             }
-            return (T) result;
         } catch (final Exception e) {
             LoggingUtils.error(LOGGER, e);
         }
