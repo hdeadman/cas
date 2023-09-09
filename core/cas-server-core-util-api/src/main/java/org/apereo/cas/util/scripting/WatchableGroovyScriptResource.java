@@ -21,6 +21,9 @@ import org.springframework.core.io.Resource;
 @Getter
 @ToString(of = "resource")
 public class WatchableGroovyScriptResource implements ExecutableCompiledGroovyScript {
+
+    private static final boolean DEFAULT_WATCHER_ENABLED = Boolean.parseBoolean(System.getProperty("cas.watchable.groovy.enabled", "true"));
+
     private final transient Resource resource;
 
     private transient FileWatcherService watcherService;
@@ -44,7 +47,7 @@ public class WatchableGroovyScriptResource implements ExecutableCompiledGroovySc
     }
 
     public WatchableGroovyScriptResource(final Resource script) {
-        this(script, true);
+        this(script, DEFAULT_WATCHER_ENABLED);
     }
 
     @Override
