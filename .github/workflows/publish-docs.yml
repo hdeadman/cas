@@ -10,7 +10,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GRADLE_BUILDCACHE_USER: ci
   GRADLE_BUILDCACHE_PSW: ${{ secrets.GRADLE_BUILDCACHE_PSW }}
-  JDK_CURRENT: 21-ea
+  JDK_CURRENT: 21
   DOCS_BRANCH: master
   RUBY_VERSION: 3.2.2
   RUBY_GC_HEAP_GROWTH_MAX_SLOTS: 104857600 # 4GB
@@ -48,7 +48,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -70,7 +70,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:

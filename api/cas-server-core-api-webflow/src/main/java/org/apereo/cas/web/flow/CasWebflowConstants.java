@@ -887,9 +887,13 @@ public interface CasWebflowConstants {
     String STATE_ID_MFA_CHECK_BYPASS = "mfaCheckBypass";
 
     /**
-     * State if for MFA composite events.
+     * State id for MFA composite events.
      */
     String STATE_ID_MFA_COMPOSITE = "mfa-composite";
+    /**
+     * State id that decides whether mfa composite should activate.
+     */
+    String STATE_ID_MFA_COMPOSITE_SELECTION = "compositeMfaProviderSelectionCheck";
 
     /**
      * State that can be used by MFA providers that offer preAuth endpoints.
@@ -1067,6 +1071,10 @@ public interface CasWebflowConstants {
      * State id 'viewRegistrationWebAuthn'.
      */
     String STATE_ID_WEBAUTHN_VIEW_REGISTRATION = "viewRegistrationWebAuthn";
+    /**
+     * State id 'checkRiskVerificationToken'.
+     */
+    String STATE_ID_RISK_AUTHENTICATION_TOKEN_CHECK = "checkRiskVerificationToken";
 
     /**
      * State id 'validateWebAuthnToken'.
@@ -1312,6 +1320,10 @@ public interface CasWebflowConstants {
      * Action id 'multifactorProviderSelectedAction'.
      */
     String ACTION_ID_MULTIFACTOR_PROVIDER_SELECTED = "multifactorProviderSelectedAction";
+    /**
+     * Action id 'compositeMfaProviderSelectionAction'.
+     */
+    String ACTION_ID_MFA_COMPOSITE_SELECTION = "compositeMfaProviderSelectionAction";
 
     /**
      * Action id 'injectResponseHeadersAction'.
@@ -2043,7 +2055,10 @@ public interface CasWebflowConstants {
      * Action id 'baseSpnegoClientAction'.
      */
     String ACTION_ID_SPNEGO_CLIENT_BASE = "baseSpnegoClientAction";
-
+    /**
+     * Action id 'riskAuthenticationTokenCheckAction'.
+     */
+    String ACTION_ID_RISK_AUTHENTICATION_TOKEN_CHECK = "riskAuthenticationCheckTokenAction";
     /**
      * The action id 'spnego'.
      */
@@ -2052,4 +2067,5 @@ public interface CasWebflowConstants {
      * The action id 'syncopePrincipalProvisionerAction'.
      */
     String ACTION_ID_SYNCOPE_PRINCIPAL_PROVISIONER_ACTION = "syncopePrincipalProvisionerAction";
+
 }

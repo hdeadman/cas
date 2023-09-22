@@ -11,7 +11,7 @@ env:
   GRADLE_BUILDCACHE_PSW: ${{ secrets.GRADLE_BUILDCACHE_PSW }}
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   SONARCLOUD_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-  JDK_CURRENT: 21-ea
+  JDK_CURRENT: 21
   CATEGORY_REGEX: ".*" # Use this to limit which tests run
   
 ##########################################################################
@@ -53,7 +53,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -75,7 +75,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -107,7 +107,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -137,7 +137,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:

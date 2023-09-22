@@ -15,7 +15,7 @@ env:
   COSMOS_DB_KEY: ${{ secrets.COSMOS_DB_KEY }}
   AZURE_MAPS_SUBSCRIPTION_ID: ${{ secrets.AZURE_MAPS_SUBSCRIPTION_ID }}
   AZURE_MAPS_CLIENT_ID: ${{ secrets.AZURE_MAPS_CLIENT_ID }}
-  JDK_CURRENT: 21-ea
+  JDK_CURRENT: 21
   RETRY_ATTEMPTS: 3
   RETRY_MINUTES: 180
   CATEGORY_REGEX: ".*" # Limit which test categories run
@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -73,7 +73,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -101,7 +101,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:
@@ -153,7 +153,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ env.JDK_CURRENT }}
-          distribution: 'temurin'
+          distribution: "zulu"
       - name: Setup Gradle Wrapper Cache
         uses: actions/cache@v3
         with:

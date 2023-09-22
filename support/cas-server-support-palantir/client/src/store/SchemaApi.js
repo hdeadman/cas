@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_PATH } from '../App.constant';
 
+import { dereference } from '../jsonschema/dereference';
+
 // Define a schema using a base URL and expected endpoints
 export const schemaApi = createApi({
     reducerPath: 'schemaApi',
@@ -15,9 +17,17 @@ export const schemaApi = createApi({
         getSchema: builder.query({
             query: (type) => `/schema/${type}`,
             transformResponse: response => {
-                response.type = 'object';
+                // response.type = 'object';
                 delete response.$schema;
-                return response;
+                delete response.required;
+                delete response.properties;
+                response.anyOf = [
+                    ...response.anyOf.filter(ao => ao.$ref.match('CasRegisteredService'))
+                ];
+                const str = JSON.stringify(response).replaceAll('"const"', '"type": "string", "const"').replaceAll('$1', '');
+                const parsed = JSON.parse(str);
+                // console.log(parsed);
+                return parsed;
             }
         }),
         getUiSchema: builder.query({
