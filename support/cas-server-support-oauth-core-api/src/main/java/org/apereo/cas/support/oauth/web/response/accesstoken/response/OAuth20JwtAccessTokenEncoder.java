@@ -55,6 +55,11 @@ public class OAuth20JwtAccessTokenEncoder implements CipherExecutor<String, Stri
                 LOGGER.warn("No access token is provided to decode");
                 return null;
             }
+            if (!tokenId.contains(".")) {
+                LOGGER.warn("Access token not decoded because it does not contain period [{}]", tokenId);
+                return null;
+            }
+
             val header = JWTParser.parse(tokenId).getHeader();
             val claims = accessTokenJwtBuilder.unpack(Optional.ofNullable(resolveRegisteredService(header)), tokenId);
             return claims.getJWTID();
