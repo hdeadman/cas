@@ -115,8 +115,7 @@ public class RedisTicketRegistryConfiguration {
             final CasConfigurationProperties casProperties) {
             val bean = new PublisherIdentifier();
             val redis = casProperties.getTicket().getRegistry().getRedis();
-
-            FunctionUtils.doIfNotBlank(redis.getQueueIdentifier(), __ -> bean.setId(redis.getQueueIdentifier()));
+            FunctionUtils.doIfNotBlank(redis.getQueueIdentifier(), bean::setId);
             return bean;
         }
 
@@ -244,7 +243,7 @@ public class RedisTicketRegistryConfiguration {
                     val searchCommands = redis.isEnableRedisSearch() ? RedisObjectFactory.newRedisModulesCommands(redis) : Optional.<RedisModulesCommands>empty();
                     return new RedisTicketRegistry(cipher, ticketSerializationManager, ticketCatalog,
                         casRedisTemplates, redisTicketRegistryCache, redisTicketRegistryMessagePublisher,
-                        searchCommands, redisKeyGeneratorFactory);
+                        searchCommands, redisKeyGeneratorFactory, casProperties);
                 })
                 .otherwise(() -> new DefaultTicketRegistry(ticketSerializationManager, ticketCatalog))
                 .get();
