@@ -21,7 +21,7 @@ sleep 60
 set +e
 echo "Dumping logs before waiting"
 RC=1
-while [ $RC -n 0 ]
+while [ $RC -ne 0 ]
 do
    kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0 | grep Running
    RC=$?
