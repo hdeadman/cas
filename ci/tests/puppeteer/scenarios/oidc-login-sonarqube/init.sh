@@ -16,10 +16,12 @@ kubectl create secret generic -n sonarqube cas-cert --from-file=cas-cert.crt=${C
 helm upgrade sonarqube sonarqube/sonarqube -n sonarqube --install \
   --values ${SCENARIO_DIR}/sonarqube-test-values.yaml \
   --set annotations.releaseTime="$( date --rfc-3339=seconds)"
-sleep 30
+sleep 60
 # we don't want to stop after this point so if it times out coming up, we can see status and logs
 set +e
+echo "Dumping logs before waiting"
 kubectl logs -n sonarqube sonarqube-sonarqube-0
+echo $?
 echo "Waiting for sonarqube pods to be ready"
 kubectl wait --namespace sonarqube --for condition=ready pod --selector=statefulset.kubernetes.io/pod-name=sonarqube-sonarqube-0 --timeout=300s
 echo "Showing sonarqube pods status"
