@@ -26,6 +26,7 @@ do
    kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0 | grep Running
    RC=$?
    kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0
+   kubectl describe pod -n sonarqube sonarqube-sonarqube-0
    kubectl logs -n sonarqube sonarqube-sonarqube-0 --tail=100
    sleep 5
 done

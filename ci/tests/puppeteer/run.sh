@@ -59,7 +59,7 @@ function progressbar() {
     todo_sub_bar=$(printf "%${todo}s" | tr " " "${bar_char_todo}")
 
     # output the bar
-    echo -ne "\rProgress: [${done_sub_bar}${todo_sub_bar}] ${percent}%"
+    echo -ne "\rProgress: [$total] [${done_sub_bar}${todo_sub_bar}] ${percent}%"
     if [ $total -eq $current ]; then
         echo -e "\n"
     fi
