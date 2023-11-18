@@ -33,7 +33,7 @@ env:
   NODE_CURRENT: '20.7.0'
   MAX_ATTEMPTS: 3
   RETRY_MINUTES: 15
-  SCENARIO_REGEX: "oidc-login-sonar.*"
+  SCENARIO_REGEX: ".*"
 
 on:
   push:
@@ -82,7 +82,7 @@ jobs:
   puppeteer-scenarios:
     needs: [initialize]
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     outputs:
       scenarios255: ${{ steps.get-scenarios255.outputs.scenarios255 }}
       scenarios511: ${{ steps.get-scenarios511.outputs.scenarios511 }}

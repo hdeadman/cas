@@ -19,23 +19,11 @@ helm upgrade sonarqube sonarqube/sonarqube -n sonarqube --install \
 sleep 60
 # we don't want to stop after this point so if it times out coming up, we can see status and logs
 set +e
-echo "Dumping logs before waiting"
-RC=1
-while [ $RC -ne 0 ]
-do
-   kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0 | grep Running
-   RC=$?
-   kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0
-   kubectl describe pod -n sonarqube sonarqube-sonarqube-0
-   kubectl logs -n sonarqube sonarqube-sonarqube-0 --tail=100 --all-containers=true
-   sleep 5
-done
-kubectl logs -n sonarqube sonarqube-sonarqube-0
-echo $?
+
 echo "Waiting for sonarqube pods to be ready"
 kubectl wait --namespace sonarqube --for condition=ready pod --selector=statefulset.kubernetes.io/pod-name=sonarqube-sonarqube-0 --timeout=300s
 echo "Showing sonarqube pods status"
 kubectl get pods -n sonarqube
-kubectl logs -n sonarqube sonarqube-sonarqube-0
+kubectl logs -n sonarqube sonarqube-sonarqube-0 --all-containers=true
 kubectl get pods -A
 curl -ksv -o /dev/null "https://host.k3d.internal"
