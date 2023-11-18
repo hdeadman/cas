@@ -2,8 +2,7 @@
 
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  ingressClassName: nginx
   hosts:
     - name: localhost
     - name: host.k3d.internal
@@ -14,7 +13,7 @@ readinessProbe:
   failureThreshold: 10
 
 startupProbe:
-  initialDelaySeconds: 15
+  initialDelaySeconds: 30
   periodSeconds: 10
   failureThreshold: 25
 
