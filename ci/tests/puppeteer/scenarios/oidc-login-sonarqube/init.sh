@@ -27,7 +27,7 @@ do
    RC=$?
    kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0
    kubectl describe pod -n sonarqube sonarqube-sonarqube-0
-   kubectl logs -n sonarqube sonarqube-sonarqube-0 --tail=100
+   kubectl logs -n sonarqube sonarqube-sonarqube-0 --tail=100 --all-containers=true
    sleep 5
 done
 kubectl logs -n sonarqube sonarqube-sonarqube-0
