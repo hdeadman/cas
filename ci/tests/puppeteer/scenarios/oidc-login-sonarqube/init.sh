@@ -20,6 +20,15 @@ sleep 60
 # we don't want to stop after this point so if it times out coming up, we can see status and logs
 set +e
 echo "Dumping logs before waiting"
+RC=1
+while [ $RC -n 0 ]
+do
+   kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0 | grep Running
+   RC=$?
+   kubectl get pods -n sonarqube  | grep sonarqube-sonarqube-0
+   kubectl logs -n sonarqube sonarqube-sonarqube-0 --tail=100
+   sleep 5
+done
 kubectl logs -n sonarqube sonarqube-sonarqube-0
 echo $?
 echo "Waiting for sonarqube pods to be ready"
