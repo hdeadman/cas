@@ -30,6 +30,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hjson.JsonValue;
 import org.hjson.Stringify;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.core.ScanOptions;
@@ -410,8 +411,21 @@ public class RedisTicketRegistry extends AbstractTicketRegistry implements Clean
         val ticketDocument = buildTicketAsDocument(ticket);
 
         casRedisTemplates.getTicketsRedisTemplate().boundValueOps(redisKeyPattern).set(ticketDocument, timeout, TimeUnit.SECONDS);
-        val adapter = buildRedisKeyValueAdapter(redisKeyPattern);
-        adapter.put(ticketDocument.getTicketId(), ticketDocument, redisKeyPattern);
+        try {
+            val adapter = buildRedisKeyValueAdapter(redisKeyPattern);
+            adapter.put(ticketDocument.getTicketId(), ticketDocument, redisKeyPattern);
+        } catch (final RedisSystemException e) {
+            LOGGER.warn("Caught RedisSystemException in addOrUpdateTicket: [{}] Ticket ID: [{}] Digested ID: [{}] "
+                + "Redis Key Pattern [{}] Create Time: [{}] Expired: [{}] Timeout: [{}]",
+                e.getMessage(),
+                ticketDocument.getTicketId(),
+                digestedId,
+                redisKeyPattern,
+                ticket.getCreationTime(),
+                ticket.isExpired(),
+                timeout);
+            throw e;
+        }
         casRedisTemplates.getTicketsRedisTemplate().expire(redisKeyPattern, timeout, TimeUnit.SECONDS);
         ticketCache.put(redisKeyGenerator.rawKey(redisKeyPattern), ticket);
 
