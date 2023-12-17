@@ -412,6 +412,15 @@ public class RedisTicketRegistry extends AbstractTicketRegistry implements Clean
 
         casRedisTemplates.getTicketsRedisTemplate().boundValueOps(redisKeyPattern).set(ticketDocument, timeout, TimeUnit.SECONDS);
         try {
+            LOGGER.info("In addOrUpdateTicket: Type [{}] Ticket ID: [{}] Digested ID: [{}] "
+                    + "Redis Key Pattern [{}] Create Time: [{}] Expired: [{}] Timeout: [{}]",
+                redisKeyGenerator.getType(),
+                ticketDocument.getTicketId(),
+                digestedId,
+                redisKeyPattern,
+                ticket.getCreationTime(),
+                ticket.isExpired(),
+                timeout);
             val adapter = buildRedisKeyValueAdapter(redisKeyPattern);
             adapter.put(ticketDocument.getTicketId(), ticketDocument, redisKeyPattern);
         } catch (final RedisSystemException e) {
