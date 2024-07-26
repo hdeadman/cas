@@ -73,7 +73,7 @@ jobs:
         run: find ./ci -type f -name "*.sh" -exec chmod +x "{}" \; && ./ci/init-build.sh
       - uses: actions/checkout@v4
       - name: Download Dependencies
-        run: ./gradlew --build-cache --configure-on-demand --no-daemon downloadDependencies --parallel --refresh-dependencies
+        run: ./gradlew --build-cache --configure-on-demand --no-daemon downloadDependencies --parallel --refresh-dependencies -DskipSonarqube
       - uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
@@ -94,5 +94,5 @@ jobs:
           export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain ${CODE_ARTIFACT_DOMAIN} --domain-owner ${{ steps.aws-credentials.outputs.aws-account-id }} --query authorizationToken --output text`
           echo "Auth Token Length: $(echo -n $CODEARTIFACT_AUTH_TOKEN | wc -c)"
           echo "CodeArtifact URL Length: $(echo -n $CODE_ARTIFACT_URL | wc -c)"
-          ./gradlew -DpublishReleases=true -DskipArtifactSigning=true --parallel --build-cache --configure-on-demand --no-daemon -DskipSonarqube -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PrepositoryUsername=aws -PrepositoryPassword=${CODEARTIFACT_AUTH_TOKEN} -PreleaseRepositoryUrl=${CODE_ARTIFACT_URL} -Pversion=${GITHUB_REF/refs\/tags\//}
+          ./gradlew -DpublishReleases=true -DskipArtifactSigning=true --parallel --no-configuration-cache --build-cache --configure-on-demand --no-daemon -DskipSonarqube -Dorg.gradle.internal.http.socketTimeout=180000 -Dorg.gradle.internal.http.connectionTimeout=180000 build publish -x test -x javadoc -x check -PrepositoryUsername=aws -PrepositoryPassword=${CODEARTIFACT_AUTH_TOKEN} -PreleaseRepositoryUrl=${CODE_ARTIFACT_URL} -Pversion=${GITHUB_REF/refs\/tags\//}
         if: ${{ env.CODE_ARTIFACT_URL != null && env.CODE_ARTIFACT_DOMAIN != null}}
