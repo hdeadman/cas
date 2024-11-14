@@ -593,8 +593,9 @@ tasks.register('publishProjectModules') {
 boolean projectShouldBePublished(Project project) {
     def publishable = !["api", "core", "docs", "support", "webapp"].contains(project.name)
             && !project.getPath().contains("cas-server-documentation")
-    if ("${releaseRepositoryUrl}".contains("github.com") && project.getPath().contains("cas-server-support-shell")) {
-        // shell is too big for github
+    if (("${releaseRepositoryUrl}".contains("github.com") && project.getPath().contains("cas-server-support-shell"))
+            || project.getPath().contains("cas-server-webapp-native")) {
+        // shell is too big for github, native not building
         publishable = false
     }
     project.ext.publishable = publishable
