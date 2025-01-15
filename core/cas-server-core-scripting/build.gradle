@@ -3,8 +3,7 @@ ext {
     publishMetadata = true
     projectMetadata = [
             title: "Apache Groovy",
-            category: "Scripting",
-            aliases: ["groovy"]
+            category: "Scripting"
     ]
 }
 
