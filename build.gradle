@@ -596,6 +596,10 @@ boolean projectShouldBePublished(Project project) {
         // shell is too big for github
         publishable = false
     }
+    if ("${releaseRepositoryUrl}".contains("codeartifact") && project.getPath().contains("cas-server-core-api-scripting")) {
+        // failing to publish this, skip for now
+        publishable = false
+    }
     project.ext.publishable = publishable
 }
 
