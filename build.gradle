@@ -597,7 +597,7 @@ boolean projectShouldBePublished(Project project) {
         publishable = false
     }
     if ("${releaseRepositoryUrl}".contains("codeartifact") &&
-            (project.getPath().contains("cas-server-core-api-scripting") || project.getPath().contains("cas-server-core-scripting"))) {
+            project.getPath().contains("cas-server-core-scripting")) {
         // failing to publish this, skip for now
         publishable = false
     }
