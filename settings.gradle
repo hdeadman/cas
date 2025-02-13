@@ -117,7 +117,7 @@ dependencyResolutionManagement {
             mavenContent { releasesOnly() }
         }
         maven {
-            url "https://jitpack.io"
+            url "https://maven.scijava.org/content/repositories/public"
             content {
                 includeGroupByRegex ".*wss4j.*"
             }
