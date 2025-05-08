@@ -157,7 +157,7 @@ material = "14.0.0"
 maxmind = "4.2.1"
 mdiFont = "7.4.47"
 micrometer = "1.14.6"
-micrometerOtel = "1.4.4"
+micrometerOtel = "1.4.5"
 mockito = "5.16.1"
 mockitoInline = "5.2.0"
 mongoDriver = "5.4.0"
@@ -183,6 +183,7 @@ otel = "1.48.0"
 pac4j = "6.1.1"
 permitio = "2.2.0"
 postgresql = "42.7.5"
+protobufJava = "3.25.5"
 pushy = "0.15.4"
 quartz = "2.5.0"
 redisLettuce = "6.5.5.RELEASE"
@@ -580,6 +581,7 @@ permit-sdk-java = { module = "io.permit:permit-sdk-java", version.ref = "permiti
 polyglot = { module = "org.graalvm.polyglot:polyglot", version.ref = "graalVm" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 pushy = { module = "com.eatthepath:pushy", version.ref = "pushy" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobufJava" }
 quartz = { module = "org.quartz-scheduler:quartz", version.ref = "quartz" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 s3 = { module = "software.amazon.awssdk:s3", version.ref = "amazonSdk" }
