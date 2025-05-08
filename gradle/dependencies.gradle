@@ -1843,11 +1843,8 @@ ext.libraries = [
                     exclude(group: "org.slf4j", module: "slf4j-api")
                     exclude(group: "commons-lang", module: "commons-lang")
                 },
-                dependencies.create(libs.micrometer.registry.otel.get()) {
-                    exclude(group: "commons-logging", module: "commons-logging")
-                    exclude(group: "org.slf4j", module: "slf4j-api")
-                    exclude(group: "commons-lang", module: "commons-lang")
-                }
+                dependencies.create(libs.protobuf.java.get()) {},
+
         ],
         mongo                      : [
                 dependencies.create(libs.mongodb.driver.core.get()) {
