@@ -35,6 +35,8 @@ ext {
     snapshotVersion = version.toString().endsWith("-SNAPSHOT")
     publishSnapshots = providers.systemProperty("publishSnapshots").present && snapshotVersion
     publishReleases = providers.systemProperty("publishReleases").present && !snapshotVersion
+    publishReleasesToSonatypeCentral = publishReleases && "${releaseRepositoryUrl}".contains("central.sonatype.com")
+    publishReleasesToCustomRepository = publishReleases && !publishReleasesToSonatypeCentral
 
     publishFlag = publishSnapshots || publishReleases
 
@@ -98,7 +100,7 @@ if (publishSnapshots) {
             delayBetween.set(java.time.Duration.ofSeconds(60))
         }
     }
-} else if (publishReleases) {
+} else if (publishReleasesToSonatypeCentral) {
     apply plugin: "com.gradleup.nmcp.aggregation"
     nmcpAggregation {
         centralPortal {
@@ -285,6 +287,37 @@ subprojects {
                             }
                             pom.withXml {
                                 project.ext.createPomRepositories(asNode())
+                            }
+                        }
+                    }
+                }
+
+                if (rootProject.publishSnapshots || rootProject.publishReleasesToCustomRepository) {
+                    repositories {
+                        if (rootProject.publishReleasesToCustomRepository) {
+                            maven {
+                                name = "CAS-Releases"
+                                url = uri("${releaseRepositoryUrl}")
+                                mavenContent {
+                                    releasesOnly()
+                                }
+                                credentials {
+                                    username = "${repositoryUsername}"
+                                    password = "${repositoryPassword}"
+                                }
+                            }
+                        }
+                        if (rootProject.publishSnapshots) {
+                            maven {
+                                name = "CAS-Snapshots"
+                                url = uri("${snapshotsRepositoryUrl}")
+                                mavenContent {
+                                    snapshotsOnly()
+                                }
+                                credentials {
+                                    username = "${repositoryUsername}"
+                                    password = "${repositoryPassword}"
+                                }
                             }
                         }
                     }
