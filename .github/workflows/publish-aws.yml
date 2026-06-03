@@ -64,14 +64,14 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
       - name: Download Dependencies
         run: ./gradlew --build-cache --configure-on-demand --no-daemon downloadDependencies --parallel --refresh-dependencies -DskipSonarqube
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
       - name: Configure AWS credentials
         id: aws-credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.CODE_ARTIFACT_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CODE_ARTIFACT_AWS_SECRET_ACCESS_KEY }}
